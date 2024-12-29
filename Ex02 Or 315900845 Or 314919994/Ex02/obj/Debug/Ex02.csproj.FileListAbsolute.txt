@@ -30,3 +30,13 @@ C:\Users\OR\Downloads\ThirdYear - Semester A\Object-Oriented Programming using C
 C:\Users\OR\Downloads\ThirdYear - Semester A\Object-Oriented Programming using C# and The .NET Framework\Assinment_02\Ex02 Or 315900845 Or 314919994\Ex02 Or 315900845 Or 314919994\Ex02\obj\Debug\Ex02.csproj.CopyComplete
 C:\Users\OR\Downloads\ThirdYear - Semester A\Object-Oriented Programming using C# and The .NET Framework\Assinment_02\Ex02 Or 315900845 Or 314919994\Ex02 Or 315900845 Or 314919994\Ex02\obj\Debug\Ex02.exe
 C:\Users\OR\Downloads\ThirdYear - Semester A\Object-Oriented Programming using C# and The .NET Framework\Assinment_02\Ex02 Or 315900845 Or 314919994\Ex02 Or 315900845 Or 314919994\Ex02\obj\Debug\Ex02.pdb
+C:\Users\robix\Or1-Or2_Ex02\Ex02 Or 315900845 Or 314919994\Ex02\obj\Debug\Ex02.csproj.AssemblyReference.cache
+C:\Users\robix\Or1-Or2_Ex02\Ex02 Or 315900845 Or 314919994\Ex02\obj\Debug\Ex02.csproj.CoreCompileInputs.cache
+C:\Users\robix\Or1-Or2_Ex02\Ex02 Or 315900845 Or 314919994\Ex02\obj\Debug\Ex02.exe
+C:\Users\robix\Or1-Or2_Ex02\Ex02 Or 315900845 Or 314919994\Ex02\obj\Debug\Ex02.pdb
+C:\Users\robix\Or1-Or2_Ex02\Ex02 Or 315900845 Or 314919994\Ex02\bin\Debug\Ex02.exe.config
+C:\Users\robix\Or1-Or2_Ex02\Ex02 Or 315900845 Or 314919994\Ex02\bin\Debug\Ex02.exe
+C:\Users\robix\Or1-Or2_Ex02\Ex02 Or 315900845 Or 314919994\Ex02\bin\Debug\Ex02.pdb
+C:\Users\robix\Or1-Or2_Ex02\Ex02 Or 315900845 Or 314919994\Ex02\bin\Debug\System.ValueTuple.dll
+C:\Users\robix\Or1-Or2_Ex02\Ex02 Or 315900845 Or 314919994\Ex02\bin\Debug\System.ValueTuple.xml
+C:\Users\robix\Or1-Or2_Ex02\Ex02 Or 315900845 Or 314919994\Ex02\obj\Debug\Ex02.csproj.Up2Date

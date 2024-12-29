@@ -17,7 +17,7 @@ namespace Ex02
         }
 
         internal PieceType[,] Grid { get; private set; }
-        public int Size { get; private set; }
+        public int Size { get; private set; }  // Here added static!
 
         public Board(int size) //Ctor
         {
@@ -27,7 +27,7 @@ namespace Ex02
             PrintBoard(pieceGrid);
         }
 
-        public void PrintBoard(Board.PieceType[,] grid)
+        public void PrintBoard(Board.PieceType[,] grid) // Here added static!
         {
             Console.Write("   ");
 
