@@ -1,0 +1,96 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\robix\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\Ex02 Or 315900845 Or 314919994 (1)\\Ex02 Or 315900845 Or 314919994\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{405E7B5F-9A21-4683-93C8-4B11A240689A}|Ex02\\Ex02.csproj|c:\\users\\robix\\onedrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\ex02 or 315900845 or 314919994 (1)\\ex02 or 315900845 or 314919994\\ex02\\board.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{405E7B5F-9A21-4683-93C8-4B11A240689A}|Ex02\\Ex02.csproj|solutionrelative:ex02\\board.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{405E7B5F-9A21-4683-93C8-4B11A240689A}|Ex02\\Ex02.csproj|C:\\Users\\robix\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\Ex02 Or 315900845 Or 314919994 (1)\\Ex02 Or 315900845 Or 314919994\\Ex02\\Game.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{405E7B5F-9A21-4683-93C8-4B11A240689A}|Ex02\\Ex02.csproj|solutionrelative:Ex02\\Game.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{405E7B5F-9A21-4683-93C8-4B11A240689A}|Ex02\\Ex02.csproj|C:\\Users\\robix\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\Ex02 Or 315900845 Or 314919994 (1)\\Ex02 Or 315900845 Or 314919994\\Ex02\\HumanPlayer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{405E7B5F-9A21-4683-93C8-4B11A240689A}|Ex02\\Ex02.csproj|solutionrelative:Ex02\\HumanPlayer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{405E7B5F-9A21-4683-93C8-4B11A240689A}|Ex02\\Ex02.csproj|c:\\users\\robix\\onedrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\ex02 or 315900845 or 314919994 (1)\\ex02 or 315900845 or 314919994\\ex02\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{405E7B5F-9A21-4683-93C8-4B11A240689A}|Ex02\\Ex02.csproj|solutionrelative:ex02\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Board.cs",
+              "DocumentMoniker": "C:\\Users\\robix\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\Ex02 Or 315900845 Or 314919994 (1)\\Ex02 Or 315900845 Or 314919994\\Ex02\\Board.cs",
+              "RelativeDocumentMoniker": "Ex02\\Board.cs",
+              "ToolTip": "C:\\Users\\robix\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\Ex02 Or 315900845 Or 314919994 (1)\\Ex02 Or 315900845 Or 314919994\\Ex02\\Board.cs*",
+              "RelativeToolTip": "Ex02\\Board.cs*",
+              "ViewState": "AgIAAB0AAAAAAAAAAAAUwB8AAAAhAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-28T15:31:02.425Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{75188d03-9892-4ae2-abf1-207126247ce5}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\robix\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\Ex02 Or 315900845 Or 314919994 (1)\\Ex02 Or 315900845 Or 314919994\\Ex02\\Program.cs",
+              "RelativeDocumentMoniker": "Ex02\\Program.cs",
+              "ToolTip": "C:\\Users\\robix\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\Ex02 Or 315900845 Or 314919994 (1)\\Ex02 Or 315900845 Or 314919994\\Ex02\\Program.cs",
+              "RelativeToolTip": "Ex02\\Program.cs",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAABoAAAAYAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-28T11:44:22.778Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Game.cs",
+              "DocumentMoniker": "C:\\Users\\robix\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\Ex02 Or 315900845 Or 314919994 (1)\\Ex02 Or 315900845 Or 314919994\\Ex02\\Game.cs",
+              "RelativeDocumentMoniker": "Ex02\\Game.cs",
+              "ToolTip": "C:\\Users\\robix\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\Ex02 Or 315900845 Or 314919994 (1)\\Ex02 Or 315900845 Or 314919994\\Ex02\\Game.cs",
+              "RelativeToolTip": "Ex02\\Game.cs",
+              "ViewState": "AgIAAB8AAAAAAAAAAAAswC4AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-28T11:06:15.941Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "HumanPlayer.cs",
+              "DocumentMoniker": "C:\\Users\\robix\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\Ex02 Or 315900845 Or 314919994 (1)\\Ex02 Or 315900845 Or 314919994\\Ex02\\HumanPlayer.cs",
+              "RelativeDocumentMoniker": "Ex02\\HumanPlayer.cs",
+              "ToolTip": "C:\\Users\\robix\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\Ex02 Or 315900845 Or 314919994 (1)\\Ex02 Or 315900845 Or 314919994\\Ex02\\HumanPlayer.cs",
+              "RelativeToolTip": "Ex02\\HumanPlayer.cs",
+              "ViewState": "AgIAAB8CAAAAAAAAAAAIwCkCAAA4AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-28T10:24:42.086Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
