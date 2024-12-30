@@ -3,24 +3,24 @@
   "WorkspaceRootPath": "C:\\Users\\robix\\Or1-Or2_Ex02\\Ex02 Or 315900845 Or 314919994\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{405E7B5F-9A21-4683-93C8-4B11A240689A}|Ex02\\Ex02.csproj|C:\\Users\\robix\\Or1-Or2_Ex02\\Ex02 Or 315900845 Or 314919994\\ex02\\computerplayer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{405E7B5F-9A21-4683-93C8-4B11A240689A}|Ex02\\Ex02.csproj|solutionrelative:ex02\\computerplayer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{405E7B5F-9A21-4683-93C8-4B11A240689A}|Ex02\\Ex02.csproj|C:\\Users\\robix\\Or1-Or2_Ex02\\Ex02 Or 315900845 Or 314919994\\ex02\\humanplayer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{405E7B5F-9A21-4683-93C8-4B11A240689A}|Ex02\\Ex02.csproj|solutionrelative:ex02\\humanplayer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{405E7B5F-9A21-4683-93C8-4B11A240689A}|Ex02\\Ex02.csproj|c:\\users\\robix\\or1-or2_ex02\\ex02 or 315900845 or 314919994\\ex02\\game.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{405E7B5F-9A21-4683-93C8-4B11A240689A}|Ex02\\Ex02.csproj|solutionrelative:ex02\\game.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{405E7B5F-9A21-4683-93C8-4B11A240689A}|Ex02\\Ex02.csproj|c:\\users\\robix\\or1-or2_ex02\\ex02 or 315900845 or 314919994\\ex02\\computerplayer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{405E7B5F-9A21-4683-93C8-4B11A240689A}|Ex02\\Ex02.csproj|solutionrelative:ex02\\computerplayer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{405E7B5F-9A21-4683-93C8-4B11A240689A}|Ex02\\Ex02.csproj|c:\\users\\robix\\or1-or2_ex02\\ex02 or 315900845 or 314919994\\ex02\\player.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{405E7B5F-9A21-4683-93C8-4B11A240689A}|Ex02\\Ex02.csproj|C:\\Users\\robix\\Or1-Or2_Ex02\\Ex02 Or 315900845 Or 314919994\\ex02\\player.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{405E7B5F-9A21-4683-93C8-4B11A240689A}|Ex02\\Ex02.csproj|solutionrelative:ex02\\player.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{405E7B5F-9A21-4683-93C8-4B11A240689A}|Ex02\\Ex02.csproj|C:\\Users\\robix\\Or1-Or2_Ex02\\Ex02 Or 315900845 Or 314919994\\ex02\\board.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{405E7B5F-9A21-4683-93C8-4B11A240689A}|Ex02\\Ex02.csproj|solutionrelative:ex02\\board.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{405E7B5F-9A21-4683-93C8-4B11A240689A}|Ex02\\Ex02.csproj|c:\\users\\robix\\or1-or2_ex02\\ex02 or 315900845 or 314919994\\ex02\\humanplayer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{405E7B5F-9A21-4683-93C8-4B11A240689A}|Ex02\\Ex02.csproj|solutionrelative:ex02\\humanplayer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{405E7B5F-9A21-4683-93C8-4B11A240689A}|Ex02\\Ex02.csproj|C:\\Users\\robix\\Or1-Or2_Ex02\\Ex02 Or 315900845 Or 314919994\\ex02\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -34,7 +34,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 7,
+          "SelectedChildIndex": 4,
           "Children": [
             {
               "$type": "Document",
@@ -44,49 +44,10 @@
               "RelativeDocumentMoniker": "Ex02\\Program.cs",
               "ToolTip": "C:\\Users\\robix\\Or1-Or2_Ex02\\Ex02 Or 315900845 Or 314919994\\Ex02\\Program.cs",
               "RelativeToolTip": "Ex02\\Program.cs",
-              "ViewState": "AgIAAB8AAAAAAAAAAAAkwAcAAAARAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAARAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-12-28T11:44:22.778Z",
               "IsPinned": true,
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "HumanPlayer.cs",
-              "DocumentMoniker": "C:\\Users\\robix\\Or1-Or2_Ex02\\Ex02 Or 315900845 Or 314919994\\Ex02\\HumanPlayer.cs",
-              "RelativeDocumentMoniker": "Ex02\\HumanPlayer.cs",
-              "ToolTip": "C:\\Users\\robix\\Or1-Or2_Ex02\\Ex02 Or 315900845 Or 314919994\\Ex02\\HumanPlayer.cs",
-              "RelativeToolTip": "Ex02\\HumanPlayer.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-12-30T11:59:22.843Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "ComputerPlayer.cs",
-              "DocumentMoniker": "C:\\Users\\robix\\Or1-Or2_Ex02\\Ex02 Or 315900845 Or 314919994\\Ex02\\ComputerPlayer.cs",
-              "RelativeDocumentMoniker": "Ex02\\ComputerPlayer.cs",
-              "ToolTip": "C:\\Users\\robix\\Or1-Or2_Ex02\\Ex02 Or 315900845 Or 314919994\\Ex02\\ComputerPlayer.cs",
-              "RelativeToolTip": "Ex02\\ComputerPlayer.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-12-30T11:58:48.402Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "Player.cs",
-              "DocumentMoniker": "C:\\Users\\robix\\Or1-Or2_Ex02\\Ex02 Or 315900845 Or 314919994\\Ex02\\Player.cs",
-              "RelativeDocumentMoniker": "Ex02\\Player.cs",
-              "ToolTip": "C:\\Users\\robix\\Or1-Or2_Ex02\\Ex02 Or 315900845 Or 314919994\\Ex02\\Player.cs",
-              "RelativeToolTip": "Ex02\\Player.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABYAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-12-30T10:33:04.886Z",
               "EditorCaption": ""
             },
             {
@@ -99,26 +60,65 @@
             },
             {
               "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "HumanPlayer.cs",
+              "DocumentMoniker": "C:\\Users\\robix\\Or1-Or2_Ex02\\Ex02 Or 315900845 Or 314919994\\Ex02\\HumanPlayer.cs",
+              "RelativeDocumentMoniker": "Ex02\\HumanPlayer.cs",
+              "ToolTip": "C:\\Users\\robix\\Or1-Or2_Ex02\\Ex02 Or 315900845 Or 314919994\\Ex02\\HumanPlayer.cs",
+              "RelativeToolTip": "Ex02\\HumanPlayer.cs",
+              "ViewState": "AgIAAAgAAAAAAAAAAAA0wBkAAAANAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-30T11:59:22.843Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "ComputerPlayer.cs",
+              "DocumentMoniker": "C:\\Users\\robix\\Or1-Or2_Ex02\\Ex02 Or 315900845 Or 314919994\\Ex02\\ComputerPlayer.cs",
+              "RelativeDocumentMoniker": "Ex02\\ComputerPlayer.cs",
+              "ToolTip": "C:\\Users\\robix\\Or1-Or2_Ex02\\Ex02 Or 315900845 Or 314919994\\Ex02\\ComputerPlayer.cs",
+              "RelativeToolTip": "Ex02\\ComputerPlayer.cs",
+              "ViewState": "AgIAAA0AAAAAAAAAAAAkwBwAAAApAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-30T11:58:48.402Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 3,
+              "Title": "Player.cs",
+              "DocumentMoniker": "C:\\Users\\robix\\Or1-Or2_Ex02\\Ex02 Or 315900845 Or 314919994\\Ex02\\Player.cs",
+              "RelativeDocumentMoniker": "Ex02\\Player.cs",
+              "ToolTip": "C:\\Users\\robix\\Or1-Or2_Ex02\\Ex02 Or 315900845 Or 314919994\\Ex02\\Player.cs",
+              "RelativeToolTip": "Ex02\\Player.cs",
+              "ViewState": "AgIAAA4AAAAAAAAAAAAEwBoAAAAhAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-30T10:33:04.886Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
               "Title": "Board.cs",
               "DocumentMoniker": "C:\\Users\\robix\\Or1-Or2_Ex02\\Ex02 Or 315900845 Or 314919994\\Ex02\\Board.cs",
               "RelativeDocumentMoniker": "Ex02\\Board.cs",
               "ToolTip": "C:\\Users\\robix\\Or1-Or2_Ex02\\Ex02 Or 315900845 Or 314919994\\Ex02\\Board.cs",
               "RelativeToolTip": "Ex02\\Board.cs",
-              "ViewState": "AgIAAAoAAAAAAAAAAAAkwBoAAABUAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-12-28T15:31:02.425Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 2,
               "Title": "Game.cs",
               "DocumentMoniker": "C:\\Users\\robix\\Or1-Or2_Ex02\\Ex02 Or 315900845 Or 314919994\\Ex02\\Game.cs",
               "RelativeDocumentMoniker": "Ex02\\Game.cs",
               "ToolTip": "C:\\Users\\robix\\Or1-Or2_Ex02\\Ex02 Or 315900845 Or 314919994\\Ex02\\Game.cs",
               "RelativeToolTip": "Ex02\\Game.cs",
-              "ViewState": "AgIAABMAAAAAAAAAAAAAAEoAAAAJAAAAAAAAAA==",
+              "ViewState": "AgIAAGwAAAAAAAAAAAAEwHQAAAAfAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-12-28T11:06:15.941Z",
               "EditorCaption": ""

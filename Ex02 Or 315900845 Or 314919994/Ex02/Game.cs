@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using static Ex02.Player;
 
 
 namespace Ex02
@@ -9,12 +10,7 @@ namespace Ex02
         private Board _board;
         private Player _player1;
         private Player _player2;
-        public enum MoveMade
-        {
-            None, // ערך ברירת מחדל
-            Quit,
-            Done,
-        }
+
 
         public Game(Player player1, Player player2, int boardSize)
         {
@@ -31,9 +27,12 @@ namespace Ex02
             {
                 Console.WriteLine($"{currentPlayer.Name}'s turn ({currentPlayer.Symbol}):{Environment.NewLine}{currentPlayer.Name}, enter your move (fromRow fromCol > toRow toCol) or 'Q' to quit:");
 
-                string input = Console.ReadLine();
                 bool isGameOver = false;
-                switch (MakeMove(input, _board.Grid, currentPlayer))
+
+
+                // handle which player is playing
+
+                switch (currentPlayer.MakeMove(_board.Grid, currentPlayer))
                 {
                     case MoveMade.Quit:
                         Console.WriteLine($"{currentPlayer.Name} quit the game. {(_player1 == currentPlayer ? _player2.Name : _player1.Name)} wins!");
@@ -60,6 +59,7 @@ namespace Ex02
 
                         break;
                 }
+
 
                 if (isGameOver)
                 {
@@ -93,7 +93,7 @@ namespace Ex02
             return count;
         }
 
-        public string ConvertStepToString(int fromRow, int fromCol, int toRow, int toCol)
+        public static string ConvertStepToString(int fromRow, int fromCol, int toRow, int toCol)
         {
             char fromRowChar = (char)('A' + fromRow);
             char fromColChar = (char)('a' + fromCol);
@@ -103,7 +103,7 @@ namespace Ex02
             return stepString;
         }
 
-        public string ValidateMove(string i_nextMoveString)
+        public static string ValidateMove(string i_nextMoveString)
         {
             while (true)
             {
@@ -128,7 +128,7 @@ namespace Ex02
                     char.IsUpper(i_nextMoveString[3]) &&
                     char.IsLower(i_nextMoveString[4]))
                 {
-                    return "True"; // Input is valid
+                    return i_nextMoveString; // Input is valid
                 }
 
                 // If input is invalid, display a message
@@ -136,103 +136,7 @@ namespace Ex02
             }
         }
 
-        public MoveMade MakeMove(string i_nextMoveString, Board.PieceType[,] i_grid, Player i_player)
-        {
-
-            int size = i_grid.GetLength(0);
-            string validationResult = ValidateMove(i_nextMoveString);
-            MoveMade isMoveMade = new MoveMade();
-
-
-            if (validationResult == "Q")
-            {
-                isMoveMade = MoveMade.Quit;
-            }
-
-            // Determine the piece type for the player
-            char playerSymbol = i_player.Symbol;
-            List<string> optionalEatMoves = GetOptionalEatMoves(i_grid, size, playerSymbol);
-            List<string> optionalMoves = GetOptionalMoves(i_grid, size, playerSymbol);
-
-            bool isEat = false;
-
-            // Handle eating moves
-            while (optionalEatMoves.Count > 0 && isMoveMade != MoveMade.Quit)
-            {
-                // Check if the entered move is a valid eating move
-                if (optionalEatMoves.Contains(i_nextMoveString))
-                {
-                    isEat = true;
-                    i_grid = UpdatingBoard(i_nextMoveString, i_grid, size, playerSymbol);
-                    Board.PrintBoard(i_grid);
-                    Console.WriteLine($"{i_player.Name}'s move was ({i_player.Symbol}): {i_nextMoveString}");
-                    isMoveMade = MoveMade.Done;
-
-                    // Recalculate eat moves after the current move
-                    optionalEatMoves = GetOptionalEatMoves(i_grid, size, playerSymbol);
-                    if (optionalEatMoves.Count > 0)
-                    {
-                        Console.WriteLine("You have another eating move. Enter your next move:");
-                        i_nextMoveString = Console.ReadLine();
-                        validationResult = ValidateMove(i_nextMoveString);
-
-                        if (validationResult == "Q")
-                        {
-                            isMoveMade = MoveMade.Quit;
-                        }
-
-                        continue;
-                    }
-
-                    break;
-                }
-                else
-                {
-                    Console.WriteLine("Invalid move. You must make an eating move.");
-                    i_nextMoveString = Console.ReadLine();
-                    validationResult = ValidateMove(i_nextMoveString);
-
-                    if (validationResult == "Q")
-                    {
-                        isMoveMade = MoveMade.Quit;
-                    }
-                }
-            }
-
-            // Handle regular moves if no eating moves are available
-            while (!isEat && optionalMoves.Count > 0 && isMoveMade != MoveMade.Quit)
-            {
-                if (optionalMoves.Contains(i_nextMoveString))
-                {
-                    i_grid = UpdatingBoard(i_nextMoveString, i_grid, size, playerSymbol);
-                    Board.PrintBoard(i_grid);
-                    Console.WriteLine($"{i_player.Name}'s move was ({i_player.Symbol}) : {i_nextMoveString}");
-                    isMoveMade = MoveMade.Done;
-                    break;
-                }
-                else
-                {
-                    Console.WriteLine("Invalid move. Please enter a valid move.");
-                    i_nextMoveString = Console.ReadLine();
-                    validationResult = ValidateMove(i_nextMoveString);
-
-                    if (validationResult == "Q")
-                    {
-                        isMoveMade = MoveMade.Quit;
-                        break;
-                    }
-                }
-            }
-            
-            if (optionalMoves.Count == 0 && optionalEatMoves.Count == 0)
-            {
-                isMoveMade = MoveMade.None;
-            }
-
-            return isMoveMade;
-        }
-
-        private Board.PieceType[,] UpdatingBoard(string move, Board.PieceType[,] i_grid, int i_size, char playerSymbol)
+        public static Board.PieceType[,] UpdatingBoard(string move, Board.PieceType[,] i_grid, int i_size, char playerSymbol)
         {
             // Parse move string like "Aa>Bb"
             char fromRowChar = move[0];
@@ -275,7 +179,7 @@ namespace Ex02
             return i_grid;
         }
 
-        public List<string> GetOptionalMoves(Board.PieceType[,] i_grid, int i_size, char i_symbol)
+        public static List<string> GetOptionalMoves(Board.PieceType[,] i_grid, int i_size, char i_symbol)
         {
             List<string> optionalMoves = new List<string>();
             Board.PieceType regularPiece = Board.PieceType.None, kingPiece = Board.PieceType.None;
@@ -377,7 +281,7 @@ namespace Ex02
             return optionalMoves;
         }
 
-        public List<string> GetOptionalEatMoves(Board.PieceType[,] grid, int size, char playerSymbol)
+        public static List<string> GetOptionalEatMoves(Board.PieceType[,] grid, int size, char playerSymbol)
         {
             List<string> optionalEatMoves = new List<string>();
             Board.PieceType regularPiece = Board.PieceType.None, kingPiece = Board.PieceType.None, opponentRegular = Board.PieceType.None, opponentKing = Board.PieceType.None;
@@ -437,7 +341,7 @@ namespace Ex02
             return optionalEatMoves;
         }
 
-        private void AddEatMoveIfValid(List<string> optionalEatMoves, Board.PieceType[,] grid, int row, int col, int size, int rowDir, int colDir, Board.PieceType opponentRegular, Board.PieceType opponentKing)
+        public static void AddEatMoveIfValid(List<string> optionalEatMoves, Board.PieceType[,] grid, int row, int col, int size, int rowDir, int colDir, Board.PieceType opponentRegular, Board.PieceType opponentKing)
         {
             int targetRow = row + rowDir * 2;   // Target position after the jump
             int targetCol = col + colDir * 2;
