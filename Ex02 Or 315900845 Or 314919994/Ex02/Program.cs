@@ -46,6 +46,7 @@ namespace Ex02
 
                 if (!string.IsNullOrWhiteSpace(name) && name.Length <= 20 && !name.Contains(" "))
                 {
+                    name = char.ToUpper(name[0]) + name.Substring(1).ToLower();
                     return name;
                 }
 
@@ -66,6 +67,7 @@ namespace Ex02
                 Console.WriteLine("Invalid board size. Please enter 6, 8, or 10.");
             }
         }
+
         private static string GetPlayersChoice()
         {
             while (true)
@@ -82,6 +84,7 @@ namespace Ex02
                 Console.WriteLine("Invalid choice. Please try again.");
             }
         }
+
 
         // מחלקת שחקן ממוחשב
         public class ComputerPlayer : Player

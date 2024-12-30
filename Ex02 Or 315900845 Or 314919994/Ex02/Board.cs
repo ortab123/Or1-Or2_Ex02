@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Ex02
 {
@@ -17,7 +14,7 @@ namespace Ex02
         }
 
         internal PieceType[,] Grid { get; private set; }
-        public int Size { get; private set; }  // Here added static!
+        public static int Size { get; private set; }  // Here added static!
 
         public Board(int size) //Ctor
         {
@@ -27,8 +24,10 @@ namespace Ex02
             PrintBoard(pieceGrid);
         }
 
-        public void PrintBoard(Board.PieceType[,] grid) // Here added static!
+        public static void PrintBoard(Board.PieceType[,] grid)  // Here added static
         {
+            Ex02.ConsoleUtils.Screen.Clear();
+
             Console.Write("   ");
 
             for (int col = 0; col < Size; col++)
@@ -158,42 +157,5 @@ namespace Ex02
             return i_grid;
         }
 
-        //public static (int fromRow, int fromCol, int toRow, int toCol) ParseMove(string input)
-        //{
-        //    if (string.IsNullOrWhiteSpace(input) || input.Length != 5 || input[2] != '>')
-        //    {
-        //        throw new ArgumentException("Invalid move format. Expected format: Bc>Cd.");
-        //    }
-
-        //    int fromRow = input[0] - 'A'; // האות הראשונה מייצגת את השורה ההתחלתית
-        //    int fromCol = input[1] - 'a'; // האות השנייה מייצגת את העמודה ההתחלתית
-        //    int toRow = input[3] - 'A';   // האות הרביעית מייצגת את השורה הסופית
-        //    int toCol = input[4] - 'a';   // האות החמישית מייצגת את העמודה הסופית
-
-        //    // בדיקה שהקלט נמצא בגבולות הלוח
-        //    if (fromRow < 0 || fromCol < 0 || toRow < 0 || toCol < 0)
-        //    {
-        //        throw new ArgumentException("Move coordinates out of bounds.");
-        //    }
-
-        //    return (fromRow, fromCol, toRow, toCol);
-        //}
-
-        public void MovePiece(int fromRow, int fromCol, int toRow, int toCol)
-        {
-            PieceType chosenPieceforNextMove = Grid[fromRow, fromCol];
-            Grid[fromRow, fromCol] = PieceType.None;
-            Grid[toRow, toCol] = chosenPieceforNextMove;
-
-            // בדיקה אם החייל הופך ל"מלך"
-            if (toRow == 0 && chosenPieceforNextMove == PieceType.O)
-            {
-                Grid[toRow, toCol] = PieceType.U; // הופך ל"מלך"
-            }
-            else if (toRow == Size - 1 && chosenPieceforNextMove == PieceType.X)
-            {
-                Grid[toRow, toCol] = PieceType.K; // הופך ל"מלך"
-            }
-        }
     }
 }

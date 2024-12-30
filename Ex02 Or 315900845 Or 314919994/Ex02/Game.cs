@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using static Ex02.Game;
+
 
 namespace Ex02
 {
@@ -10,6 +10,12 @@ namespace Ex02
         private Board _board;
         private Player _player1;
         private Player _player2;
+        public enum MoveMade
+        {
+            None, // ערך ברירת מחדל
+            Quit,
+            Done,
+        }
 
         public Game(Player player1, Player player2, int boardSize)
         {
@@ -24,41 +30,49 @@ namespace Ex02
 
             while (true)
             {
-               // Ex02.ConsoleUtils.Screen.Clear();
                 Console.WriteLine($"{currentPlayer.Name}'s turn ({currentPlayer.Symbol}):{Environment.NewLine}{currentPlayer.Name}, enter your move (fromRow fromCol > toRow toCol) or 'Q' to quit:");
-                
+
                 string input = Console.ReadLine();
-
-
-                MakeMove(input, _board.Grid, _board.Size, currentPlayer);
-                //if (quit)
+                bool isGameOver = false;
+                switch (MakeMove(input, _board.Grid, currentPlayer))
                 {
-                    Console.WriteLine($"{currentPlayer.Name} quit the game. {(_player1 == currentPlayer ? _player2.Name : _player1.Name)} wins!");
+                    case MoveMade.Quit:
+                        Console.WriteLine($"{currentPlayer.Name} quit the game. {(_player1 == currentPlayer ? _player2.Name : _player1.Name)} wins!");
+                        isGameOver = true;
+                        break;
+                    case MoveMade.None:
+                        Console.WriteLine($"No possible moves for: {currentPlayer.Name}. {(_player1 == currentPlayer ? _player2.Name : _player1.Name)} wins!");
+                        isGameOver = true;
+                        break;
+                    case MoveMade.Done:
+                        break;
+                }
+                if (isGameOver)
+                {
                     break;
                 }
+                else
+                {
+                    currentPlayer = (currentPlayer == _player1) ? _player2 : _player1;
+                }
 
-                //_board.MovePiece(fromRow, fromCol, toRow, toCol);
 
-                currentPlayer = currentPlayer == _player1 ? _player2 : _player1;
             }
         }
 
 
-        char ConvertDigitToLowerLetter(int i_digit)
+        public string ConvertStepToString(int fromRow, int fromCol, int toRow, int toCol)
         {
-            return (char)('a' + (i_digit - '0')); // Map 0->a, 1->b, ..., 9->j
+            char fromRowChar = (char)('A' + fromRow);
+            char fromColChar = (char)('a' + fromCol);
+            char toRowChar = (char)('A' + toRow);
+            char toColChar = (char)('a' + toCol);
+            string stepString = fromRowChar.ToString() + fromColChar + '>' + toRowChar + toColChar;
+            return stepString;
         }
 
-        char ConvertDigitToUpperLetter(int i_digit)
+        public string ValidateMove(string i_nextMoveString, Player i_player)
         {
-            return (char)('A' + (i_digit - '0')); // Map 0->A, 1->B, ..., 9->J
-        }
-
-        public string ValidateMove(string i_nextMoveString, Player i_player) {
-
-            // Loop for continuous input validation
-            string returnedValue = "True";
-
             while (true)
             {
                 // Prompt for input if it's null or whitespace
@@ -72,92 +86,120 @@ namespace Ex02
                 if (i_nextMoveString.ToUpper() == "Q")
                 {
                     Console.WriteLine($"{i_player.Name} has lost the game. :( ");
-                    returnedValue = "Q"; // Exit the method
-                    break;
+                    return "Q"; // Return quit signal
                 }
-
-                // Convert to char array for validation
-                char[] chars = i_nextMoveString.ToCharArray();
 
                 // Validate input format: Xx>Yy
-                if (chars.Length == 5 &&
-                    Char.IsUpper(chars[0]) &&
-                    Char.IsLower(chars[1]) &&
-                    chars[2] == '>' &&
-                    Char.IsUpper(chars[3]) &&
-                    Char.IsLower(chars[4]))
+                if (i_nextMoveString.Length == 5 &&
+                    char.IsUpper(i_nextMoveString[0]) &&
+                    char.IsLower(i_nextMoveString[1]) &&
+                    i_nextMoveString[2] == '>' &&
+                    char.IsUpper(i_nextMoveString[3]) &&
+                    char.IsLower(i_nextMoveString[4]))
                 {
-                    // Input is valid, break out of the loop
-                    break;
+                    return "True"; // Input is valid
                 }
 
-                // If input is invalid, display a message and reset the loop
+                // If input is invalid, display a message
                 Console.WriteLine("Invalid input. Please enter move in format of Xx>Yy, or 'Q' to quit.");
-                i_nextMoveString = null; // Reset input to trigger the outer loop for new input
+                i_nextMoveString = null; // Reset input to trigger the loop for new input
             }
-
-            return returnedValue;
         }
 
-        public Board.PieceType[,] MakeMove(string i_nextMoveString, Board.PieceType[,] i_grid, int i_size, Player i_player)
+        public MoveMade MakeMove(string i_nextMoveString, Board.PieceType[,] i_grid, Player i_player)
         {
-            if (ValidateMove(i_nextMoveString, i_player) == "True")
+
+            int size = i_grid.GetLength(0);
+            string validationResult = ValidateMove(i_nextMoveString, i_player);
+            MoveMade isMoveMade = new MoveMade();
+
+
+            if (validationResult == "Q")
             {
-                // Lists for optional moves and eat moves
-                List<string> OoptionalEatMoves = GetOptionalEatMoves(i_grid, i_size, 'O'); // צעדי אכילה של עיגול
-                List<string> XoptionalEatMoves = GetOptionalEatMoves(i_grid, i_size, 'X'); // צעדי אכילה של איקס
+                isMoveMade = MoveMade.Quit;
+            }
 
-                List<string> OoptionalMoves = GetOptionalMoves(i_grid, i_size, 'O'); // צעדים רגילים של עיגול
-                List<string> XoptionalMoves = GetOptionalMoves(i_grid, i_size, 'X'); // צעדים רגילים של איקס
+            // Determine the piece type for the player
+            char playerSymbol = i_player.Symbol;
+            List<string> optionalEatMoves = GetOptionalEatMoves(i_grid, size, playerSymbol);
+            List<string> optionalMoves = GetOptionalMoves(i_grid, size, playerSymbol);
 
-                bool isEat = false;
+            bool isEat = false;
 
-                while (OoptionalEatMoves.Count > 0)
+            // Handle eating moves
+            while (optionalEatMoves.Count > 0)
+            {
+                // Check if the entered move is a valid eating move
+                if (optionalEatMoves.Contains(i_nextMoveString))
                 {
-                    for (int i = 0; i < OoptionalEatMoves.Count; i++)
+                    isEat = true;
+                    i_grid = UpdatingBoard(i_nextMoveString, i_grid, size, playerSymbol);
+                    Board.PrintBoard(i_grid);
+                    Console.WriteLine($"{i_player.Name}'s move was ({i_player.Symbol}): {i_nextMoveString}");
+                    isMoveMade = MoveMade.Done;
+
+                    // Recalculate eat moves after the current move
+                    optionalEatMoves = GetOptionalEatMoves(i_grid, size, playerSymbol);
+                    if (optionalEatMoves.Count > 0)
                     {
-                        if (i_nextMoveString == OoptionalEatMoves[i])
+                        Console.WriteLine("You have another eating move. Enter your next move:");
+                        i_nextMoveString = Console.ReadLine();
+                        validationResult = ValidateMove(i_nextMoveString, i_player);
+
+                        if (validationResult == "Q")
                         {
-                            isEat = true;
-                            i_grid = UpdatingBoard(i_nextMoveString, i_grid, i_size, 'O');
-
-                            //print
-                            OoptionalEatMoves = GetOptionalEatMoves(i_grid, i_size, 'O');
-                            if (OoptionalEatMoves.Count > 0)
-                            {
-                                if(ValidateMove(i_nextMoveString = Console.ReadLine(), i_player) == "True")
-                                {
-
-                                }
-                                 
-                                break;
-                            }
+                            isMoveMade = MoveMade.Quit;
                         }
+
+                        continue;
                     }
+
                     break;
                 }
-
-                if (OoptionalMoves.Count > 0 && !isEat)
+                else
                 {
-                    for (int i = 0; i < OoptionalMoves.Count; i++)
+                    Console.WriteLine("Invalid move. You must make an eating move.");
+                    i_nextMoveString = Console.ReadLine();
+                    validationResult = ValidateMove(i_nextMoveString, i_player);
+
+                    if (validationResult == "Q")
                     {
-                        if (i_nextMoveString == OoptionalMoves[i])
-                        {
-                            i_grid = UpdatingBoard(i_nextMoveString, i_grid, i_size, 'O');
-                            break;
-                        }
+                        isMoveMade = MoveMade.Quit;
                     }
                 }
-                return i_grid;
             }
-            else
+
+            // Handle regular moves if no eating moves are available
+            while (!isEat && optionalMoves.Count > 0)
             {
-                // print lost
+                if (optionalMoves.Contains(i_nextMoveString))
+                {
+                    i_grid = UpdatingBoard(i_nextMoveString, i_grid, size, playerSymbol);
+                    Board.PrintBoard(i_grid);
+                    Console.WriteLine($"{i_player.Name}'s move was ({i_player.Symbol}) : {i_nextMoveString}");
+                    isMoveMade = MoveMade.Done;
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("Invalid move. Please enter a valid move.");
+                    i_nextMoveString = Console.ReadLine();
+                    validationResult = ValidateMove(i_nextMoveString, i_player);
+
+                    if (validationResult == "Q")
+                    {
+                        isMoveMade = MoveMade.Quit;
+                    }
+                }
             }
+            if (optionalMoves.Count == 0 && optionalEatMoves.Count == 0)
+            {
+                isMoveMade = MoveMade.None;
+            }
+
+            return isMoveMade;
         }
 
-
-        // Helper function to perform the move (update grid)
         private Board.PieceType[,] UpdatingBoard(string move, Board.PieceType[,] i_grid, int i_size, char playerSymbol)
         {
             // Parse move string like "A2>B3"
@@ -170,6 +212,19 @@ namespace Ex02
             int fromCol = fromColChar - 'a'; // Convert column letter to index
             int toRow = toRowChar - 'A';     // Convert row letter to index
             int toCol = toColChar - 'a';    // Convert column letter to index
+
+            // Check if this is an eating move (jumping over an opponent's piece)
+            int rowDiff = Math.Abs(toRow - fromRow);
+            int colDiff = Math.Abs(toCol - fromCol);
+
+            if (rowDiff == 2 && colDiff == 2) // Eating move
+            {
+                int eatenRow = (fromRow + toRow) / 2;
+                int eatenCol = (fromCol + toCol) / 2;
+
+                // Erase the eaten token
+                i_grid[eatenRow, eatenCol] = Board.PieceType.None;
+            }
 
             // Update the board based on the move
             i_grid[toRow, toCol] = i_grid[fromRow, fromCol];
@@ -184,6 +239,8 @@ namespace Ex02
             {
                 i_grid[toRow, toCol] = Board.PieceType.K;  // Make 'X' a king
             }
+
+            // count
 
             return i_grid;
         }
@@ -225,8 +282,7 @@ namespace Ex02
 
                             if (canEatForwardLeft)
                             {
-                                string move = ConvertDigitToUpperLetter(row) + ConvertDigitToLowerLetter(col) + ">" +
-                                              ConvertDigitToUpperLetter(row + 2) + ConvertDigitToLowerLetter(col - 2);
+                                string move = ConvertStepToString(row, col, row + 2, col - 2);
                                 optionalEatMoves.Add(move);
                             }
 
@@ -237,8 +293,7 @@ namespace Ex02
 
                             if (canEatForwardRight)
                             {
-                                string move = ConvertDigitToUpperLetter(row) + ConvertDigitToLowerLetter(col) + ">" +
-                                              ConvertDigitToUpperLetter(row + 2) + ConvertDigitToLowerLetter(col + 2);
+                                string move = ConvertStepToString(row, col, row + 2, col + 2);
                                 optionalEatMoves.Add(move);
                             }
 
@@ -251,8 +306,7 @@ namespace Ex02
 
                                 if (canEatBackwardLeft)
                                 {
-                                    string move = ConvertDigitToUpperLetter(row) + ConvertDigitToLowerLetter(col) + ">" +
-                                                  ConvertDigitToUpperLetter(row - 2) + ConvertDigitToLowerLetter(col - 2);
+                                    string move = ConvertStepToString(row, col, row - 2, col - 2);
                                     optionalEatMoves.Add(move);
                                 }
 
@@ -262,8 +316,7 @@ namespace Ex02
                                                            grid[row - 2, col + 2] == Board.PieceType.None;
                                 if (canEatBackwardRight)
                                 {
-                                    string move = ConvertDigitToUpperLetter(row) + ConvertDigitToLowerLetter(col) + ">" +
-                                                  ConvertDigitToUpperLetter(row - 2) + ConvertDigitToLowerLetter(col + 2);
+                                    string move = ConvertStepToString(row, col, row - 2, col + 2);
                                     optionalEatMoves.Add(move);
                                 }
                             }
@@ -279,8 +332,7 @@ namespace Ex02
 
                             if (canEatForwardLeft)
                             {
-                                string move = ConvertDigitToUpperLetter(row) + ConvertDigitToLowerLetter(col) + ">" +
-                                              ConvertDigitToUpperLetter(row - 2) + ConvertDigitToLowerLetter(col - 2);
+                                string move = ConvertStepToString(row, col, row - 2, col - 2);
                                 optionalEatMoves.Add(move);
                             }
 
@@ -291,8 +343,7 @@ namespace Ex02
 
                             if (canEatForwardRight)
                             {
-                                string move = ConvertDigitToUpperLetter(row) + ConvertDigitToLowerLetter(col) + ">" +
-                                              ConvertDigitToUpperLetter(row - 2) + ConvertDigitToLowerLetter(col + 2);
+                                string move = ConvertStepToString(row, col, row - 2, col + 2);
                                 optionalEatMoves.Add(move);
                             }
                         }
@@ -307,8 +358,7 @@ namespace Ex02
 
                             if (canEatBackwardLeft)
                             {
-                                string move = ConvertDigitToUpperLetter(row) + ConvertDigitToLowerLetter(col) + ">" +
-                                              ConvertDigitToUpperLetter(row + 2) + ConvertDigitToLowerLetter(col - 2);
+                                string move = ConvertStepToString(row, col, row + 2, col - 2);
                                 optionalEatMoves.Add(move);
                             }
 
@@ -319,8 +369,7 @@ namespace Ex02
 
                             if (canEatBackwardRight)
                             {
-                                string move = ConvertDigitToUpperLetter(row) + ConvertDigitToLowerLetter(col) + ">" +
-                                              ConvertDigitToUpperLetter(row + 2) + ConvertDigitToLowerLetter(col + 2);
+                                string move = ConvertStepToString(row, col, row + 2, col + 2);
                                 optionalEatMoves.Add(move);
                             }
                         }
@@ -354,80 +403,74 @@ namespace Ex02
                     if (i_grid[row, col] == regularPiece || i_grid[row, col] == kingPiece)
                     {
                         // עבור 'O' ו-'U' - דילוג קדימה לכיוון מטה
-                        if (i_symbol == 'O' || i_symbol == 'U')
+                        if (regularPiece == Board.PieceType.O || kingPiece == Board.PieceType.U)
                         {
                             // Move Forward Left
                             if (row + 1 < i_size && col - 1 >= 0 && i_grid[row + 1, col - 1] == Board.PieceType.None)
                             {
-                                string move = ConvertDigitToUpperLetter(row) + ConvertDigitToLowerLetter(col) + ">" +
-                                              ConvertDigitToUpperLetter(row + 1) + ConvertDigitToLowerLetter(col - 1);
+                                string move = ConvertStepToString(row, col, row + 1, col - 1);
                                 optionalMoves.Add(move);
                             }
 
                             // Move Forward Right
                             if (row + 1 < i_size && col + 1 < i_size && i_grid[row + 1, col + 1] == Board.PieceType.None)
                             {
-                                string move = ConvertDigitToUpperLetter(row) + ConvertDigitToLowerLetter(col) + ">" +
-                                              ConvertDigitToUpperLetter(row + 1) + ConvertDigitToLowerLetter(col + 1);
+                                string move = ConvertStepToString(row, col, row + 1, col + 1);
                                 optionalMoves.Add(move);
                             }
 
                             // עבור 'U' (מלך 'O') - דילוג אחורה לכיוון למעלה
-                            if (i_symbol == 'U')
+                            if (kingPiece == Board.PieceType.U)
                             {
                                 // Move Backward Left
                                 if (row - 1 >= 0 && col - 1 >= 0 && i_grid[row - 1, col - 1] == Board.PieceType.None)
                                 {
-                                    string move = ConvertDigitToUpperLetter(row) + ConvertDigitToLowerLetter(col) + ">" +
-                                                  ConvertDigitToUpperLetter(row - 1) + ConvertDigitToLowerLetter(col - 1);
+                                    string move = ConvertStepToString(row, col, row - 1, col - 1);
                                     optionalMoves.Add(move);
                                 }
 
                                 // Move Backward Right
                                 if (row - 1 >= 0 && col + 1 < i_size && i_grid[row - 1, col + 1] == Board.PieceType.None)
                                 {
-                                    string move = ConvertDigitToUpperLetter(row) + ConvertDigitToLowerLetter(col) + ">" +
-                                                  ConvertDigitToUpperLetter(row - 1) + ConvertDigitToLowerLetter(col + 1);
+                                    string move = ConvertStepToString(row, col, row - 1, col + 1);
                                     optionalMoves.Add(move);
                                 }
                             }
                         }
 
                         // עבור 'X' ו-'K' - דילוג קדימה לכיוון מעלה
-                        if (i_symbol == 'X' || i_symbol == 'K')
+                        if (regularPiece == Board.PieceType.X || kingPiece == Board.PieceType.K)
                         {
                             // Move Forward Left
                             if (row - 1 >= 0 && col - 1 >= 0 && i_grid[row - 1, col - 1] == Board.PieceType.None)
                             {
-                                string move = ConvertDigitToUpperLetter(row) + ConvertDigitToLowerLetter(col) + ">" +
-                                              ConvertDigitToUpperLetter(row - 1) + ConvertDigitToLowerLetter(col - 1);
+                                string move = ConvertStepToString(row, col, row - 1, col - 1);
+
                                 optionalMoves.Add(move);
                             }
 
                             // Move Forward Right
                             if (row - 1 >= 0 && col + 1 < i_size && i_grid[row - 1, col + 1] == Board.PieceType.None)
                             {
-                                string move = ConvertDigitToUpperLetter(row) + ConvertDigitToLowerLetter(col) + ">" +
-                                              ConvertDigitToUpperLetter(row - 1) + ConvertDigitToLowerLetter(col + 1);
+                                string move = ConvertStepToString(row, col, row - 1, col + 1);
+
                                 optionalMoves.Add(move);
                             }
 
                             // עבור 'K' (מלך 'X') - דילוג אחורה לכיוון למטה
-                            if (i_symbol == 'K')
+                            if (kingPiece == Board.PieceType.K)
                             {
                                 // Move Backward Left
                                 if (row + 1 < i_size && col - 1 >= 0 && i_grid[row + 1, col - 1] == Board.PieceType.None)
                                 {
-                                    string move = ConvertDigitToUpperLetter(row) + ConvertDigitToLowerLetter(col) + ">" +
-                                                  ConvertDigitToUpperLetter(row + 1) + ConvertDigitToLowerLetter(col - 1);
+                                    string move = ConvertStepToString(row, col, row + 1, col - 1);
                                     optionalMoves.Add(move);
                                 }
 
                                 // Move Backward Right
                                 if (row + 1 < i_size && col + 1 < i_size && i_grid[row + 1, col + 1] == Board.PieceType.None)
                                 {
-                                    string move = ConvertDigitToUpperLetter(row) + ConvertDigitToLowerLetter(col) + ">" +
-                                                  ConvertDigitToUpperLetter(row + 1) + ConvertDigitToLowerLetter(col + 1);
+                                    string move = ConvertStepToString(row, col, row + 1, col + 1);
                                     optionalMoves.Add(move);
                                 }
                             }
