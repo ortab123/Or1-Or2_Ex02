@@ -15,6 +15,8 @@ namespace Ex02
             Name = name;
             Symbol = symbol;
         }
+
+
     }
 }
 

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using static Ex02.Game;
 
 
 namespace Ex02
@@ -45,8 +44,23 @@ namespace Ex02
                         isGameOver = true;
                         break;
                     case MoveMade.Done:
+                        int player1Tokens = CountPlayerTokens(_board.Grid, 'X');
+                        int player2Tokens = CountPlayerTokens(_board.Grid, 'O');
+
+                        if (player1Tokens == 0)
+                        {
+                            Console.WriteLine($"{_player2.Name} wins! No tokens left for {_player1.Name}.");
+                            isGameOver = true;
+                        }
+                        else if (player2Tokens == 0)
+                        {
+                            Console.WriteLine($"{_player1.Name} wins! No tokens left for {_player2.Name}.");
+                            isGameOver = true;
+                        }
+
                         break;
                 }
+
                 if (isGameOver)
                 {
                     break;
@@ -60,6 +74,24 @@ namespace Ex02
             }
         }
 
+        private int CountPlayerTokens(Board.PieceType[,] grid, char playerSymbol)
+        {
+            int count = 0;
+
+            // Determine the pieces to count based on the player symbol
+            Board.PieceType regularPiece = playerSymbol == 'X' ? Board.PieceType.X : Board.PieceType.O;
+            Board.PieceType kingPiece = playerSymbol == 'X' ? Board.PieceType.K : Board.PieceType.U;
+
+            foreach (var cell in grid)
+            {
+                if (cell == regularPiece || cell == kingPiece)
+                {
+                    count++;
+                }
+            }
+
+            return count;
+        }
 
         public string ConvertStepToString(int fromRow, int fromCol, int toRow, int toCol)
         {
@@ -71,7 +103,7 @@ namespace Ex02
             return stepString;
         }
 
-        public string ValidateMove(string i_nextMoveString, Player i_player)
+        public string ValidateMove(string i_nextMoveString)
         {
             while (true)
             {
@@ -85,7 +117,6 @@ namespace Ex02
                 // Check if the user wants to quit
                 if (i_nextMoveString.ToUpper() == "Q")
                 {
-                    Console.WriteLine($"{i_player.Name} has lost the game. :( ");
                     return "Q"; // Return quit signal
                 }
 
@@ -102,7 +133,6 @@ namespace Ex02
 
                 // If input is invalid, display a message
                 Console.WriteLine("Invalid input. Please enter move in format of Xx>Yy, or 'Q' to quit.");
-                i_nextMoveString = null; // Reset input to trigger the loop for new input
             }
         }
 
@@ -110,7 +140,7 @@ namespace Ex02
         {
 
             int size = i_grid.GetLength(0);
-            string validationResult = ValidateMove(i_nextMoveString, i_player);
+            string validationResult = ValidateMove(i_nextMoveString);
             MoveMade isMoveMade = new MoveMade();
 
 
@@ -127,7 +157,7 @@ namespace Ex02
             bool isEat = false;
 
             // Handle eating moves
-            while (optionalEatMoves.Count > 0)
+            while (optionalEatMoves.Count > 0 && isMoveMade != MoveMade.Quit)
             {
                 // Check if the entered move is a valid eating move
                 if (optionalEatMoves.Contains(i_nextMoveString))
@@ -144,7 +174,7 @@ namespace Ex02
                     {
                         Console.WriteLine("You have another eating move. Enter your next move:");
                         i_nextMoveString = Console.ReadLine();
-                        validationResult = ValidateMove(i_nextMoveString, i_player);
+                        validationResult = ValidateMove(i_nextMoveString);
 
                         if (validationResult == "Q")
                         {
@@ -160,7 +190,7 @@ namespace Ex02
                 {
                     Console.WriteLine("Invalid move. You must make an eating move.");
                     i_nextMoveString = Console.ReadLine();
-                    validationResult = ValidateMove(i_nextMoveString, i_player);
+                    validationResult = ValidateMove(i_nextMoveString);
 
                     if (validationResult == "Q")
                     {
@@ -170,7 +200,7 @@ namespace Ex02
             }
 
             // Handle regular moves if no eating moves are available
-            while (!isEat && optionalMoves.Count > 0)
+            while (!isEat && optionalMoves.Count > 0 && isMoveMade != MoveMade.Quit)
             {
                 if (optionalMoves.Contains(i_nextMoveString))
                 {
@@ -184,14 +214,16 @@ namespace Ex02
                 {
                     Console.WriteLine("Invalid move. Please enter a valid move.");
                     i_nextMoveString = Console.ReadLine();
-                    validationResult = ValidateMove(i_nextMoveString, i_player);
+                    validationResult = ValidateMove(i_nextMoveString);
 
                     if (validationResult == "Q")
                     {
                         isMoveMade = MoveMade.Quit;
+                        break;
                     }
                 }
             }
+            
             if (optionalMoves.Count == 0 && optionalEatMoves.Count == 0)
             {
                 isMoveMade = MoveMade.None;
@@ -202,7 +234,7 @@ namespace Ex02
 
         private Board.PieceType[,] UpdatingBoard(string move, Board.PieceType[,] i_grid, int i_size, char playerSymbol)
         {
-            // Parse move string like "A2>B3"
+            // Parse move string like "Aa>Bb"
             char fromRowChar = move[0];
             char fromColChar = move[1];
             char toRowChar = move[3];
@@ -240,143 +272,7 @@ namespace Ex02
                 i_grid[toRow, toCol] = Board.PieceType.K;  // Make 'X' a king
             }
 
-            // count
-
             return i_grid;
-        }
-
-        public List<string> GetOptionalEatMoves(Board.PieceType[,] grid, int size, char i_symbol)
-        {
-            List<string> optionalEatMoves = new List<string>();
-            Board.PieceType regularPiece = Board.PieceType.None, kingPiece = Board.PieceType.None, opponentRegular = Board.PieceType.None, opponentKing = Board.PieceType.None;
-
-            // אתחול המשתנים על פי ערך 'i_symbol'
-            if (i_symbol == 'O')
-            {
-                regularPiece = Board.PieceType.O;
-                kingPiece = Board.PieceType.U;
-                opponentRegular = Board.PieceType.X;
-                opponentKing = Board.PieceType.K;
-            }
-            else if (i_symbol == 'X')
-            {
-                regularPiece = Board.PieceType.X;
-                kingPiece = Board.PieceType.K;
-                opponentRegular = Board.PieceType.O;
-                opponentKing = Board.PieceType.U;
-            }
-
-            for (int row = 0; row < size; row++)
-            {
-                for (int col = 0; col < size; col++)
-                {
-                    if (grid[row, col] == regularPiece || grid[row, col] == kingPiece)
-                    {
-                        // במקרה של 'O' ו-'U' - האכלה קדימה לכיוון למטה
-                        if (i_symbol == 'O')
-                        {
-                            // Eating forward left
-                            bool canEatForwardLeft = row + 2 < size && col - 2 >= 0 &&
-                                                     (grid[row + 1, col - 1] == opponentRegular || grid[row + 1, col - 1] == opponentKing) &&
-                                                     grid[row + 2, col - 2] == Board.PieceType.None;
-
-                            if (canEatForwardLeft)
-                            {
-                                string move = ConvertStepToString(row, col, row + 2, col - 2);
-                                optionalEatMoves.Add(move);
-                            }
-
-                            // Eating forward right
-                            bool canEatForwardRight = row + 2 < size && col + 2 < size &&
-                                                      (grid[row + 1, col + 1] == opponentRegular || grid[row + 1, col + 1] == opponentKing) &&
-                                                      grid[row + 2, col + 2] == Board.PieceType.None;
-
-                            if (canEatForwardRight)
-                            {
-                                string move = ConvertStepToString(row, col, row + 2, col + 2);
-                                optionalEatMoves.Add(move);
-                            }
-
-                            if (grid[row, col] == kingPiece)
-                            {
-                                // Eating backward left
-                                bool canEatBackwardLeft = row - 2 >= 0 && col - 2 >= 0 &&
-                                                          (grid[row - 1, col - 1] == opponentRegular || grid[row - 1, col - 1] == opponentKing) &&
-                                                          grid[row - 2, col - 2] == Board.PieceType.None;
-
-                                if (canEatBackwardLeft)
-                                {
-                                    string move = ConvertStepToString(row, col, row - 2, col - 2);
-                                    optionalEatMoves.Add(move);
-                                }
-
-                                // Eating backward right
-                                bool canEatBackwardRight = row - 2 >= 0 && col + 2 < size &&
-                                                           (grid[row - 1, col + 1] == opponentRegular || grid[row - 1, col + 1] == opponentKing) &&
-                                                           grid[row - 2, col + 2] == Board.PieceType.None;
-                                if (canEatBackwardRight)
-                                {
-                                    string move = ConvertStepToString(row, col, row - 2, col + 2);
-                                    optionalEatMoves.Add(move);
-                                }
-                            }
-                        }
-
-                        // במקרה של 'X' ו-'K' - אכילה קדימה לכיוון למעלה
-                        if (i_symbol == 'X')
-                        {
-                            // Eating forward left
-                            bool canEatForwardLeft = row - 2 >= 0 && col - 2 >= 0 &&
-                                                     (grid[row - 1, col - 1] == opponentRegular || grid[row - 1, col - 1] == opponentKing) &&
-                                                     grid[row - 2, col - 2] == Board.PieceType.None;
-
-                            if (canEatForwardLeft)
-                            {
-                                string move = ConvertStepToString(row, col, row - 2, col - 2);
-                                optionalEatMoves.Add(move);
-                            }
-
-                            // Eating forward right
-                            bool canEatForwardRight = row - 2 >= 0 && col + 2 < size &&
-                                                      (grid[row - 1, col + 1] == opponentRegular || grid[row - 1, col + 1] == opponentKing) &&
-                                                      grid[row - 2, col + 2] == Board.PieceType.None;
-
-                            if (canEatForwardRight)
-                            {
-                                string move = ConvertStepToString(row, col, row - 2, col + 2);
-                                optionalEatMoves.Add(move);
-                            }
-                        }
-
-                        // במקרה של 'K' (מלך 'X') - אכילה אחורה לכיוון למטה
-                        if (grid[row, col] == kingPiece)
-                        {
-                            // Eating backward left
-                            bool canEatBackwardLeft = row + 2 < size && col - 2 >= 0 &&
-                                                      (grid[row + 1, col - 1] == opponentRegular || grid[row + 1, col - 1] == opponentKing) &&
-                                                      grid[row + 2, col - 2] == Board.PieceType.None;
-
-                            if (canEatBackwardLeft)
-                            {
-                                string move = ConvertStepToString(row, col, row + 2, col - 2);
-                                optionalEatMoves.Add(move);
-                            }
-
-                            // Eating backward right
-                            bool canEatBackwardRight = row + 2 < size && col + 2 < size &&
-                                                       (grid[row + 1, col + 1] == opponentRegular || grid[row + 1, col + 1] == opponentKing) &&
-                                                       grid[row + 2, col + 2] == Board.PieceType.None;
-
-                            if (canEatBackwardRight)
-                            {
-                                string move = ConvertStepToString(row, col, row + 2, col + 2);
-                                optionalEatMoves.Add(move);
-                            }
-                        }
-                    }
-                }
-            }
-            return optionalEatMoves;
         }
 
         public List<string> GetOptionalMoves(Board.PieceType[,] i_grid, int i_size, char i_symbol)
@@ -480,5 +376,82 @@ namespace Ex02
             }
             return optionalMoves;
         }
+
+        public List<string> GetOptionalEatMoves(Board.PieceType[,] grid, int size, char playerSymbol)
+        {
+            List<string> optionalEatMoves = new List<string>();
+            Board.PieceType regularPiece = Board.PieceType.None, kingPiece = Board.PieceType.None, opponentRegular = Board.PieceType.None, opponentKing = Board.PieceType.None;
+
+            // Initialize piece types based on playerSymbol
+            if (playerSymbol == 'O')
+            {
+                regularPiece = Board.PieceType.O;
+                kingPiece = Board.PieceType.U;
+                opponentRegular = Board.PieceType.X;
+                opponentKing = Board.PieceType.K;
+            }
+            else if (playerSymbol == 'X')
+            {
+                regularPiece = Board.PieceType.X;
+                kingPiece = Board.PieceType.K;
+                opponentRegular = Board.PieceType.O;
+                opponentKing = Board.PieceType.U;
+            }
+
+            for (int row = 0; row < size; row++)
+            {
+                for (int col = 0; col < size; col++)
+                {
+                    // Check if the piece is regular or king
+                    if (grid[row, col] == regularPiece || grid[row, col] == kingPiece)
+                    {
+                        // Regular pieces only move in specific directions
+                        if (grid[row, col] == regularPiece)
+                        {
+                            // For 'O', check downward eats
+                            if (playerSymbol == 'O')
+                            {
+                                AddEatMoveIfValid(optionalEatMoves, grid, row, col, size, 1, -1, opponentRegular, opponentKing); // Down-left
+                                AddEatMoveIfValid(optionalEatMoves, grid, row, col, size, 1, 1, opponentRegular, opponentKing);  // Down-right
+                            }
+                            // For 'X', check upward eats
+                            else if (playerSymbol == 'X')
+                            {
+                                AddEatMoveIfValid(optionalEatMoves, grid, row, col, size, -1, -1, opponentRegular, opponentKing); // Up-left
+                                AddEatMoveIfValid(optionalEatMoves, grid, row, col, size, -1, 1, opponentRegular, opponentKing);  // Up-right
+                            }
+                        }
+
+                        // Kings can move in all directions
+                        if (grid[row, col] == kingPiece)
+                        {
+                            AddEatMoveIfValid(optionalEatMoves, grid, row, col, size, 1, -1, opponentRegular, opponentKing);  // Down-left
+                            AddEatMoveIfValid(optionalEatMoves, grid, row, col, size, 1, 1, opponentRegular, opponentKing);   // Down-right
+                            AddEatMoveIfValid(optionalEatMoves, grid, row, col, size, -1, -1, opponentRegular, opponentKing); // Up-left
+                            AddEatMoveIfValid(optionalEatMoves, grid, row, col, size, -1, 1, opponentRegular, opponentKing);  // Up-right
+                        }
+                    }
+                }
+            }
+
+            return optionalEatMoves;
+        }
+
+        private void AddEatMoveIfValid(List<string> optionalEatMoves, Board.PieceType[,] grid, int row, int col, int size, int rowDir, int colDir, Board.PieceType opponentRegular, Board.PieceType opponentKing)
+        {
+            int targetRow = row + rowDir * 2;   // Target position after the jump
+            int targetCol = col + colDir * 2;
+            int middleRow = row + rowDir;      // Position of the opponent's piece
+            int middleCol = col + colDir;
+
+            if (targetRow >= 0 && targetRow < size && targetCol >= 0 && targetCol < size && // Ensure within bounds
+                (grid[middleRow, middleCol] == opponentRegular || grid[middleRow, middleCol] == opponentKing) && // Opponent's piece present
+                grid[targetRow, targetCol] == Board.PieceType.None) // Target cell is empty
+            {
+                string move = ConvertStepToString(row, col, targetRow, targetCol);
+                optionalEatMoves.Add(move);
+            }
+        }
+
     }
 }
