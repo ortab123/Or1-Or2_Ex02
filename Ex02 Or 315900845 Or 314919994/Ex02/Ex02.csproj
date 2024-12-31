@@ -36,9 +36,13 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Board.cs" />
-    <Compile Include="ComputerPlayer.cs" />
+    <Compile Include="ConsuleUI.cs" />
+    <Compile Include="eAnotherGame.cs" />
+    <Compile Include="eMoveMade.cs" />
+    <Compile Include="ePieceType.cs" />
+    <Compile Include="ePlayerType.cs" />
     <Compile Include="Game.cs" />
-    <Compile Include="HumanPlayer.cs" />
+    <Compile Include="Grid.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Program.cs" />
   </ItemGroup>

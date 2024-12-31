@@ -10,83 +10,236 @@ namespace Ex02
         private Board _board;
         private Player _player1;
         private Player _player2;
+        private ePlayerType _playerModeChoice;
 
-
-        public Game(Player player1, Player player2, int boardSize)
+        public Game(Player player1, Player player2, int boardSize, ePlayerType playerModeChoice)
         {
             _board = new Board(boardSize);
             _player1 = player1;
             _player2 = player2;
+            _playerModeChoice = playerModeChoice;
         }
 
         public void Start()
         {
-            Player currentPlayer = _player1;
+            Grid grid = _board.GetGrid();
+            LittleGameProcess(ref grid, _player1, _player2, _playerModeChoice);
+            GameEndMenu(this);
+        }
+
+        private static void LittleGameProcess(ref Grid i_grid, Player player1, Player player2, ePlayerType playerType)
+        {
+            Player currentPlayer = player1;
+            Player loser;
 
             while (true)
             {
-                Console.WriteLine($"{currentPlayer.Name}'s turn ({currentPlayer.Symbol}):{Environment.NewLine}{currentPlayer.Name}, enter your move (fromRow fromCol > toRow toCol) or 'Q' to quit:");
-
+                // if computer no need to write this line
+                if (currentPlayer.Name != "Computer")
+                {
+                    Console.WriteLine($"{currentPlayer.Name}'s turn ({currentPlayer.Symbol}):" +
+                        $"{Environment.NewLine}{currentPlayer.Name}, enter your move (fromRow fromCol > toRow toCol) or 'Q' to quit:");
+                }
                 bool isGameOver = false;
 
-
-                // handle which player is playing
-
-                switch (currentPlayer.MakeMove(_board.Grid, currentPlayer))
+                if (playerType == ePlayerType.Regular)
                 {
-                    case MoveMade.Quit:
-                        Console.WriteLine($"{currentPlayer.Name} quit the game. {(_player1 == currentPlayer ? _player2.Name : _player1.Name)} wins!");
-                        isGameOver = true;
-                        break;
-                    case MoveMade.None:
-                        Console.WriteLine($"No possible moves for: {currentPlayer.Name}. {(_player1 == currentPlayer ? _player2.Name : _player1.Name)} wins!");
-                        isGameOver = true;
-                        break;
-                    case MoveMade.Done:
-                        int player1Tokens = CountPlayerTokens(_board.Grid, 'X');
-                        int player2Tokens = CountPlayerTokens(_board.Grid, 'O');
-
-                        if (player1Tokens == 0)
-                        {
-                            Console.WriteLine($"{_player2.Name} wins! No tokens left for {_player1.Name}.");
+                   switch(currentPlayer.MakePlayerMove(ref i_grid, player1))
+                    {
+                        case eMoveMade.Quit:
+                            Console.WriteLine($"{currentPlayer.Name} quit the game. {(player1 == currentPlayer ? player2.Name : player1.Name)} wins!");
                             isGameOver = true;
-                        }
-                        else if (player2Tokens == 0)
-                        {
-                            Console.WriteLine($"{_player1.Name} wins! No tokens left for {_player2.Name}.");
+                            loser = currentPlayer;
+                            break;
+                        case eMoveMade.None:
+                            Console.WriteLine($"No possible moves for: {currentPlayer.Name}. {(player1 == currentPlayer ? player2.Name : player1.Name)} wins!");
                             isGameOver = true;
-                        }
+                            loser = currentPlayer;
+                            break;
+                        case eMoveMade.Done:
+                            int player1Tokens = CountPlayerTokens(ref i_grid, 'X');
+                            int player2Tokens = CountPlayerTokens(ref i_grid, 'O');
 
-                        break;
-                }
+                            if (player1Tokens == 0)
+                            {
+                                Console.WriteLine($"{player2.Name} wins! No tokens left for {player1.Name}.");
+                                isGameOver = true;
+                                loser = currentPlayer;
+                            }
+                            else if (player2Tokens == 0)
+                            {
+                                Console.WriteLine($"{player1.Name} wins! No tokens left for {player2.Name}.");
+                                isGameOver = true;
+                            }
 
+                            break;
+                    }
 
-                if (isGameOver)
-                {
-                    break;
                 }
                 else
                 {
-                    currentPlayer = (currentPlayer == _player1) ? _player2 : _player1;
+                    eMoveMade moveMade = new eMoveMade();
+                    if(currentPlayer.Name == "Computer")
+                    {
+                        moveMade = currentPlayer.MakeComputerMove(ref i_grid, player2);
+                    }
+                    else
+                    {
+                        moveMade = currentPlayer.MakePlayerMove(ref i_grid, player1);
+                    }
+                    switch (moveMade)
+                    {
+                        case eMoveMade.Quit:
+                            Console.WriteLine($"{currentPlayer.Name} quit the game. {(player1 == currentPlayer ? player2.Name : player1.Name)} wins!");
+                            isGameOver = true;
+                            break;
+                        case eMoveMade.None:
+                            Console.WriteLine($"No possible moves for: {currentPlayer.Name}. {(player1 == currentPlayer ? player2.Name : player1.Name)} wins!");
+                            isGameOver = true;
+                            break;
+                        case eMoveMade.Done:
+                            int player1Tokens = CountPlayerTokens(ref i_grid, 'X');
+                            int player2Tokens = CountPlayerTokens(ref i_grid, 'O');
+
+                            if (player1Tokens == 0)
+                            {
+                                Console.WriteLine($"{player2.Name} wins! No tokens left for {player1.Name}.");
+                                isGameOver = true;
+                            }
+                            else if (player2Tokens == 0)
+                            {
+                                Console.WriteLine($"{player1.Name} wins! No tokens left for {player2.Name}.");
+                                isGameOver = true;
+                            }
+
+                            break;
+                    }
                 }
 
+                if (isGameOver)
+                {
+                    loser = currentPlayer;
+                    break;
+                }
 
+                currentPlayer = (currentPlayer == player1) ? player2 : player1;
+            }
+
+            CalculateScore(ref i_grid,ref player1,ref player2, loser);
+            Player.PrintScoreBoard(player1,player2);
+        }
+
+        public static eAnotherGame GetPlayerChoiceForRemacth()
+        {
+            while (true)
+            {
+                eAnotherGame eRematch = new eAnotherGame();
+                Console.WriteLine($"1. No{Environment.NewLine}2. Yes");
+                string choice = Console.ReadLine();
+                if (!string.IsNullOrWhiteSpace(choice))
+                {
+                    if (choice == "1")
+                    {
+                        eRematch = eAnotherGame.No;
+                    }
+                    if (choice == "2")
+                    {
+                        eRematch = eAnotherGame.Yes;
+                    }
+                    return eRematch;
+                }
+
+                Console.WriteLine("Invalid choice. Please try again.");
             }
         }
 
-        private int CountPlayerTokens(Board.PieceType[,] grid, char playerSymbol)
+        private static int CountPlayerPoints(ref Grid i_grid, Player player)
+        {
+            int score = player.Points;
+            char playerSymbol = player.Symbol;
+
+            ePieceType regularPiece = playerSymbol == 'X' ? ePieceType.X : ePieceType.O;
+            ePieceType kingPiece = playerSymbol == 'X' ? ePieceType.K : ePieceType.U;
+
+            for (int row = 0; row < i_grid.Size; row++)
+            {
+                for (int col = 0; col < i_grid.Size; col++)
+                {
+                    ePieceType piece = i_grid.GetPieceAt(row, col);
+                    if (piece == regularPiece)
+                    {
+                        score++;
+                    }
+                    if (piece == kingPiece)
+                    {
+                        score += 4;
+                    }
+                }
+            }
+
+            return score;
+        }
+
+        public static void CalculateScore(ref Grid i_grid,ref Player player1,
+            ref Player player2, Player loser)
+        {
+            int firstPlayerPoints = CountPlayerPoints(ref i_grid, player1);
+            int secondPlayerPoints = CountPlayerPoints(ref i_grid, player2);
+            int score = Math.Abs(firstPlayerPoints - secondPlayerPoints);
+            
+            if (player1.Name == loser.Name)
+            {
+                player1.Points += score;
+            }
+            else
+            {
+                player2.Points += score;
+            }
+        }
+        public static void GameEndMenu(Game i_game)
+        {
+            bool keepPlaying = true;
+
+            while (keepPlaying)
+            {
+                Console.WriteLine($"Thanks for playing Checkers with us!{Environment.NewLine}" +
+                    $"Do you want to play another game?{Environment.NewLine}" +
+                    $"Names, size, type and score will remain the same.");
+
+                eAnotherGame playerChoiceForRematch = GetPlayerChoiceForRemacth();
+                switch (playerChoiceForRematch)
+                {
+                    case eAnotherGame.No:
+                        Console.WriteLine("Have a nice day!");
+                        keepPlaying = false;
+                        break;
+                    case eAnotherGame.Yes:
+                        Grid newGrid = new Grid(i_game._board.GetGrid().Size);
+                        ConsoleUtils.Screen.Clear();
+                        Board.PrintBoard(ref newGrid);
+                        LittleGameProcess(ref newGrid, i_game._player1, i_game._player2, i_game._playerModeChoice);
+                        break;
+                }
+            }
+        }
+
+        private static int CountPlayerTokens(ref Grid i_grid, char playerSymbol)
         {
             int count = 0;
 
             // Determine the pieces to count based on the player symbol
-            Board.PieceType regularPiece = playerSymbol == 'X' ? Board.PieceType.X : Board.PieceType.O;
-            Board.PieceType kingPiece = playerSymbol == 'X' ? Board.PieceType.K : Board.PieceType.U;
+            ePieceType regularPiece = playerSymbol == 'X' ? ePieceType.X : ePieceType.O;
+            ePieceType kingPiece = playerSymbol == 'X' ? ePieceType.K : ePieceType.U;
 
-            foreach (var cell in grid)
+            for (int row = 0; row < i_grid.Size; row++)
             {
-                if (cell == regularPiece || cell == kingPiece)
+                for (int col = 0; col < i_grid.Size; col++)
                 {
-                    count++;
+                    ePieceType piece = i_grid.GetPieceAt(row, col);
+                    if (piece == regularPiece || piece == kingPiece)
+                    {
+                        count++;
+                    }
                 }
             }
 
@@ -105,38 +258,45 @@ namespace Ex02
 
         public static string ValidateMove(string i_nextMoveString)
         {
-            while (true)
+            string validatedMove = null;
+            while (validatedMove == null)
             {
                 // Prompt for input if it's null or whitespace
-                while (string.IsNullOrWhiteSpace(i_nextMoveString))
+                if (string.IsNullOrWhiteSpace(i_nextMoveString))
                 {
                     Console.WriteLine("Input cannot be empty. Try again.");
-                    i_nextMoveString = Console.ReadLine();
                 }
 
                 // Check if the user wants to quit
-                if (i_nextMoveString.ToUpper() == "Q")
+                else if (i_nextMoveString.ToUpper() == "Q")
                 {
-                    return "Q"; // Return quit signal
+                    validatedMove = "Q"; // Return quit signal
                 }
 
                 // Validate input format: Xx>Yy
-                if (i_nextMoveString.Length == 5 &&
+                else if (i_nextMoveString.Length == 5 &&
                     char.IsUpper(i_nextMoveString[0]) &&
                     char.IsLower(i_nextMoveString[1]) &&
                     i_nextMoveString[2] == '>' &&
                     char.IsUpper(i_nextMoveString[3]) &&
                     char.IsLower(i_nextMoveString[4]))
                 {
-                    return i_nextMoveString; // Input is valid
+                    validatedMove = i_nextMoveString;
+                }
+                else
+                {
+                    Console.WriteLine("Invalid input. Please enter move in format of Xx>Yy, or 'Q' to quit.");
                 }
 
-                // If input is invalid, display a message
-                Console.WriteLine("Invalid input. Please enter move in format of Xx>Yy, or 'Q' to quit.");
+                if (validatedMove == null)
+                {
+                    i_nextMoveString = Console.ReadLine();
+                }
             }
+            return validatedMove;
         }
 
-        public static Board.PieceType[,] UpdatingBoard(string move, Board.PieceType[,] i_grid, int i_size, char playerSymbol)
+        public static Grid UpdatingBoard(string move,ref Grid i_grid, int i_size, char playerSymbol)
         {
             // Parse move string like "Aa>Bb"
             char fromRowChar = move[0];
@@ -159,203 +319,26 @@ namespace Ex02
                 int eatenCol = (fromCol + toCol) / 2;
 
                 // Erase the eaten token
-                i_grid[eatenRow, eatenCol] = Board.PieceType.None;
+                i_grid.SetPieceAt(eatenRow, eatenCol, ePieceType.None);
             }
 
             // Update the board based on the move
-            i_grid[toRow, toCol] = i_grid[fromRow, fromCol];
-            i_grid[fromRow, fromCol] = Board.PieceType.None;  // Clear the original position
+            i_grid.SetPieceAt(toRow, toCol, i_grid.GetPieceAt(fromRow, fromCol));
+            i_grid.SetPieceAt(fromRow, fromCol, ePieceType.None);  // Clear the original position
 
             // If the piece is not a king and reached the end of the board, make it a king
             if (playerSymbol == 'O' && toRow == i_size - 1)
             {
-                i_grid[toRow, toCol] = Board.PieceType.U;  // Make 'O' a king
+                i_grid.SetPieceAt(toRow, toCol, ePieceType.U);  // Make 'O' a king
             }
             else if (playerSymbol == 'X' && toRow == 0)
             {
-                i_grid[toRow, toCol] = Board.PieceType.K;  // Make 'X' a king
+                i_grid.SetPieceAt(toRow, toCol, ePieceType.K);  // Make 'X' a king
             }
 
             return i_grid;
         }
 
-        public static List<string> GetOptionalMoves(Board.PieceType[,] i_grid, int i_size, char i_symbol)
-        {
-            List<string> optionalMoves = new List<string>();
-            Board.PieceType regularPiece = Board.PieceType.None, kingPiece = Board.PieceType.None;
-
-            // אתחול המשתנים על פי ערך 'i_symbol'
-            if (i_symbol == 'O')
-            {
-                regularPiece = Board.PieceType.O;
-                kingPiece = Board.PieceType.U;
-            }
-            else if (i_symbol == 'X')
-            {
-                regularPiece = Board.PieceType.X;
-                kingPiece = Board.PieceType.K;
-            }
-
-            for (int row = 0; row < i_size; row++)
-            {
-                for (int col = 0; col < i_size; col++)
-                {
-                    if (i_grid[row, col] == regularPiece || i_grid[row, col] == kingPiece)
-                    {
-                        // עבור 'O' ו-'U' - דילוג קדימה לכיוון מטה
-                        if (regularPiece == Board.PieceType.O || kingPiece == Board.PieceType.U)
-                        {
-                            // Move Forward Left
-                            if (row + 1 < i_size && col - 1 >= 0 && i_grid[row + 1, col - 1] == Board.PieceType.None)
-                            {
-                                string move = ConvertStepToString(row, col, row + 1, col - 1);
-                                optionalMoves.Add(move);
-                            }
-
-                            // Move Forward Right
-                            if (row + 1 < i_size && col + 1 < i_size && i_grid[row + 1, col + 1] == Board.PieceType.None)
-                            {
-                                string move = ConvertStepToString(row, col, row + 1, col + 1);
-                                optionalMoves.Add(move);
-                            }
-
-                            // עבור 'U' (מלך 'O') - דילוג אחורה לכיוון למעלה
-                            if (kingPiece == Board.PieceType.U)
-                            {
-                                // Move Backward Left
-                                if (row - 1 >= 0 && col - 1 >= 0 && i_grid[row - 1, col - 1] == Board.PieceType.None)
-                                {
-                                    string move = ConvertStepToString(row, col, row - 1, col - 1);
-                                    optionalMoves.Add(move);
-                                }
-
-                                // Move Backward Right
-                                if (row - 1 >= 0 && col + 1 < i_size && i_grid[row - 1, col + 1] == Board.PieceType.None)
-                                {
-                                    string move = ConvertStepToString(row, col, row - 1, col + 1);
-                                    optionalMoves.Add(move);
-                                }
-                            }
-                        }
-
-                        // עבור 'X' ו-'K' - דילוג קדימה לכיוון מעלה
-                        if (regularPiece == Board.PieceType.X || kingPiece == Board.PieceType.K)
-                        {
-                            // Move Forward Left
-                            if (row - 1 >= 0 && col - 1 >= 0 && i_grid[row - 1, col - 1] == Board.PieceType.None)
-                            {
-                                string move = ConvertStepToString(row, col, row - 1, col - 1);
-
-                                optionalMoves.Add(move);
-                            }
-
-                            // Move Forward Right
-                            if (row - 1 >= 0 && col + 1 < i_size && i_grid[row - 1, col + 1] == Board.PieceType.None)
-                            {
-                                string move = ConvertStepToString(row, col, row - 1, col + 1);
-
-                                optionalMoves.Add(move);
-                            }
-
-                            // עבור 'K' (מלך 'X') - דילוג אחורה לכיוון למטה
-                            if (kingPiece == Board.PieceType.K)
-                            {
-                                // Move Backward Left
-                                if (row + 1 < i_size && col - 1 >= 0 && i_grid[row + 1, col - 1] == Board.PieceType.None)
-                                {
-                                    string move = ConvertStepToString(row, col, row + 1, col - 1);
-                                    optionalMoves.Add(move);
-                                }
-
-                                // Move Backward Right
-                                if (row + 1 < i_size && col + 1 < i_size && i_grid[row + 1, col + 1] == Board.PieceType.None)
-                                {
-                                    string move = ConvertStepToString(row, col, row + 1, col + 1);
-                                    optionalMoves.Add(move);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            return optionalMoves;
-        }
-
-        public static List<string> GetOptionalEatMoves(Board.PieceType[,] grid, int size, char playerSymbol)
-        {
-            List<string> optionalEatMoves = new List<string>();
-            Board.PieceType regularPiece = Board.PieceType.None, kingPiece = Board.PieceType.None, opponentRegular = Board.PieceType.None, opponentKing = Board.PieceType.None;
-
-            // Initialize piece types based on playerSymbol
-            if (playerSymbol == 'O')
-            {
-                regularPiece = Board.PieceType.O;
-                kingPiece = Board.PieceType.U;
-                opponentRegular = Board.PieceType.X;
-                opponentKing = Board.PieceType.K;
-            }
-            else if (playerSymbol == 'X')
-            {
-                regularPiece = Board.PieceType.X;
-                kingPiece = Board.PieceType.K;
-                opponentRegular = Board.PieceType.O;
-                opponentKing = Board.PieceType.U;
-            }
-
-            for (int row = 0; row < size; row++)
-            {
-                for (int col = 0; col < size; col++)
-                {
-                    // Check if the piece is regular or king
-                    if (grid[row, col] == regularPiece || grid[row, col] == kingPiece)
-                    {
-                        // Regular pieces only move in specific directions
-                        if (grid[row, col] == regularPiece)
-                        {
-                            // For 'O', check downward eats
-                            if (playerSymbol == 'O')
-                            {
-                                AddEatMoveIfValid(optionalEatMoves, grid, row, col, size, 1, -1, opponentRegular, opponentKing); // Down-left
-                                AddEatMoveIfValid(optionalEatMoves, grid, row, col, size, 1, 1, opponentRegular, opponentKing);  // Down-right
-                            }
-                            // For 'X', check upward eats
-                            else if (playerSymbol == 'X')
-                            {
-                                AddEatMoveIfValid(optionalEatMoves, grid, row, col, size, -1, -1, opponentRegular, opponentKing); // Up-left
-                                AddEatMoveIfValid(optionalEatMoves, grid, row, col, size, -1, 1, opponentRegular, opponentKing);  // Up-right
-                            }
-                        }
-
-                        // Kings can move in all directions
-                        if (grid[row, col] == kingPiece)
-                        {
-                            AddEatMoveIfValid(optionalEatMoves, grid, row, col, size, 1, -1, opponentRegular, opponentKing);  // Down-left
-                            AddEatMoveIfValid(optionalEatMoves, grid, row, col, size, 1, 1, opponentRegular, opponentKing);   // Down-right
-                            AddEatMoveIfValid(optionalEatMoves, grid, row, col, size, -1, -1, opponentRegular, opponentKing); // Up-left
-                            AddEatMoveIfValid(optionalEatMoves, grid, row, col, size, -1, 1, opponentRegular, opponentKing);  // Up-right
-                        }
-                    }
-                }
-            }
-
-            return optionalEatMoves;
-        }
-
-        public static void AddEatMoveIfValid(List<string> optionalEatMoves, Board.PieceType[,] grid, int row, int col, int size, int rowDir, int colDir, Board.PieceType opponentRegular, Board.PieceType opponentKing)
-        {
-            int targetRow = row + rowDir * 2;   // Target position after the jump
-            int targetCol = col + colDir * 2;
-            int middleRow = row + rowDir;      // Position of the opponent's piece
-            int middleCol = col + colDir;
-
-            if (targetRow >= 0 && targetRow < size && targetCol >= 0 && targetCol < size && // Ensure within bounds
-                (grid[middleRow, middleCol] == opponentRegular || grid[middleRow, middleCol] == opponentKing) && // Opponent's piece present
-                grid[targetRow, targetCol] == Board.PieceType.None) // Target cell is empty
-            {
-                string move = ConvertStepToString(row, col, targetRow, targetCol);
-                optionalEatMoves.Add(move);
-            }
-        }
 
     }
 }

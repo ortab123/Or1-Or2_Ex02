@@ -2,15 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Ex02
 {
-    class Program
+    public enum eAnotherGame
     {
-        static void Main()
-        {
-            ConsuleUI.GameStartMenu();
-        }
-
+        No,
+        Yes,
     }
 }

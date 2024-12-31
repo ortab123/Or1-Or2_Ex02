@@ -1,30 +1,22 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 
 namespace Ex02
 {
     public class Board
     {
-        public enum PieceType
-        {
-            None, // ערך ברירת מחדל
-            X,
-            O,
-            K,
-            U
-        }
+        private static Grid grid;
 
-        internal PieceType[,] Grid { get; private set; }
-        public static int Size { get; private set; }  // Here added static!
+        public static int Size { get; private set; } 
 
         public Board(int size) //Ctor
         {
             Size = size;
-            Grid = new PieceType[Size, Size];
-            Board.PieceType[,] pieceGrid = FillUpGrid(Grid, Size);
-            PrintBoard(pieceGrid);
+            grid = new Grid(size);
+            PrintBoard(ref grid);
         }
 
-        public static void PrintBoard(Board.PieceType[,] grid)  // Here added static
+        public static void PrintBoard(ref Grid grid) 
         {
             Ex02.ConsoleUtils.Screen.Clear();
 
@@ -44,13 +36,13 @@ namespace Ex02
 
                 for (int col = 0; col < Size; col++)
                 {
-                    if (grid[row, col] == PieceType.None)
+                    if(grid.GetPieceAt(row,col) == ePieceType.None)
                     {
                         Console.Write("   |");
                     }
                     else 
                     {
-                        string pieceSymbol = grid[row, col].ToString();
+                        string pieceSymbol = grid.GetPieceAt(row, col).ToString();
                         Console.Write($" {pieceSymbol} |");
                     }   
                 }
@@ -63,98 +55,56 @@ namespace Ex02
             }
         }
 
-        internal Board.PieceType[,] FillUpGrid(Board.PieceType[,] i_grid, int i_size)
+        public static int SetBoardSize()
         {
-            if(i_size == 6)
+            while (true)
             {
-                for(int row=0; row<i_size; row++)
+                Console.WriteLine($"Please select board size:{Environment.NewLine}1. 6{Environment.NewLine}2. 8{Environment.NewLine}3. 10");
+                string choice = Console.ReadLine();
+                if (choice == "1")
                 {
-                    for (int col = 0; col < i_size; col++)
-                    {
-                        if (row == 0 && col % 2 == 1)
-                        {
-                            i_grid[row, col] = PieceType.O;
-                        }
-                        else if (row == 1 && col % 2 == 0)
-                        {
-                            i_grid[row, col] = PieceType.O;
-                        }
-                        else if (row == 4 && col % 2 == 1)
-                        {
-                            i_grid[row, col] = PieceType.X;
-                        }
-                        else if (row == 5 && col % 2 == 0)
-                        {
-                            i_grid[row, col] = PieceType.X;
-                        }
-                        else
-                        {
-                            i_grid[row, col] = PieceType.None;
-                        }
-                    }
-                } 
+                    return 6;
+                }
+                if (choice == "2")
+                {
+                    return 8;
+                }
+                if (choice == "3")
+                {
+                    return 10;
+                }
+                Console.WriteLine("Invalid board size. Please try again.");
             }
-            else if(i_size == 8)
+
+        }
+
+        public static ePlayerType GetPlayerOrComputerGame()
+        {
+            while (true)
             {
-                for (int row = 0; row < i_size; row++)
+                ePlayerType eGameType = new ePlayerType();
+                Console.WriteLine($"Do you want to play against another player or the computer?{Environment.NewLine}1. Player vs. player{Environment.NewLine}2. Player vs. computer");
+                string choice = Console.ReadLine();
+                if (!string.IsNullOrWhiteSpace(choice))
                 {
-                    for (int col = 0; col < i_size; col++)
+                    if (choice == "1")
                     {
-                        if ((row == 0 || row == 2) && col % 2 == 1)
-                        {
-                            i_grid[row, col] = PieceType.O;
-                        }
-                        else if (row == 1 && col % 2 == 0)
-                        {
-                            i_grid[row, col] = PieceType.O;
-                        }
-                        else if ((row == 5 || row == 7) && col % 2 == 1)
-                        {
-                            i_grid[row, col] = PieceType.X;
-                        }
-                        else if (row == 6 && col % 2 == 0)
-                        {
-                            i_grid[row, col] = PieceType.X;
-                        }
-                        else
-                        {
-                            i_grid[row, col] = PieceType.None;
-                        }
+                        eGameType = ePlayerType.Regular;
                     }
+                    if (choice == "2")
+                    {
+                        eGameType = ePlayerType.Computer;
+                    }
+                    return eGameType;
                 }
 
+                Console.WriteLine("Invalid choice. Please try again.");
             }
-            else if(i_size == 10)
-            {
-                for (int row = 0; row < i_size; row++)
-                {
-                    for (int col = 0; col < i_size; col++)
-                    {
-                        if ((row == 0 || row == 2) && col % 2 == 1)
-                        {
-                            i_grid[row, col] = PieceType.O;
-                        }
-                        else if ((row == 1 || row == 3) && col % 2 == 0)
-                        {
-                            i_grid[row, col] = PieceType.O;
-                        }
-                        else if ((row == 6 || row == 8) && col % 2 == 1)
-                        {
-                            i_grid[row, col] = PieceType.X;
-                        }
-                        else if ((row == 7 || row == 9)&& col % 2 == 0)
-                        {
-                            i_grid[row, col] = PieceType.X;
-                        }
-                        else
-                        {
-                            i_grid[row, col] = PieceType.None;
-                        }
-                    }
-                }
+        }
 
-            }
-            return i_grid;
+        public Grid GetGrid()
+        {
+            return grid;
         }
 
     }
