@@ -44,7 +44,7 @@ namespace Ex02
 
                 if (playerType == ePlayerType.Regular)
                 {
-                   switch(currentPlayer.MakePlayerMove(ref i_grid, player1))
+                    switch (currentPlayer.MakePlayerMove(ref i_grid, currentPlayer))
                     {
                         case eMoveMade.Quit:
                             Console.WriteLine($"{currentPlayer.Name} quit the game. {(player1 == currentPlayer ? player2.Name : player1.Name)} wins!");
@@ -74,7 +74,6 @@ namespace Ex02
 
                             break;
                     }
-
                 }
                 else
                 {
@@ -155,7 +154,7 @@ namespace Ex02
 
         private static int CountPlayerPoints(ref Grid i_grid, Player player)
         {
-            int score = player.Points;
+            int score = 0;
             char playerSymbol = player.Symbol;
 
             ePieceType regularPiece = playerSymbol == 'X' ? ePieceType.X : ePieceType.O;
@@ -176,7 +175,6 @@ namespace Ex02
                     }
                 }
             }
-
             return score;
         }
 
@@ -185,17 +183,18 @@ namespace Ex02
         {
             int firstPlayerPoints = CountPlayerPoints(ref i_grid, player1);
             int secondPlayerPoints = CountPlayerPoints(ref i_grid, player2);
-            int score = Math.Abs(firstPlayerPoints - secondPlayerPoints);
+            int scoreDifference = Math.Abs(firstPlayerPoints - secondPlayerPoints);
             
             if (player1.Name == loser.Name)
             {
-                player1.Points += score;
+                player1.Points += scoreDifference;
             }
             else
             {
-                player2.Points += score;
+                player2.Points += scoreDifference;
             }
         }
+
         public static void GameEndMenu(Game i_game)
         {
             bool keepPlaying = true;
@@ -333,12 +332,10 @@ namespace Ex02
             }
             else if (playerSymbol == 'X' && toRow == 0)
             {
-                i_grid.SetPieceAt(toRow, toCol, ePieceType.K);  // Make 'X' a king
+                i_grid.SetPieceAt(toRow, toCol, ePieceType.K);  // Make 'X' a king         
             }
 
             return i_grid;
         }
-
-
     }
 }

@@ -17,6 +17,7 @@ namespace Ex02
             m_Grid = new ePieceType[size, size];
             InitializeGrid(size);
         }
+
         private void InitializeGrid(int size)
         {
             int rowsForPieces;
@@ -66,10 +67,12 @@ namespace Ex02
                 }
             }
         }
+
         public ePieceType GetPieceAt(int row, int col)
         {
             return m_Grid[row, col];
         }
+
         public void SetPieceAt(int row, int col, ePieceType pieceType)
         {
             m_Grid[row, col] = pieceType;

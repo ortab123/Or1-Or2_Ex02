@@ -8,8 +8,6 @@ namespace Ex02
 {
     public class Player
     {
-
-
         public string Name { get; private set; }
         public char Symbol { get; private set; } // 'X' or 'O'
         public int Points { get; set; }
@@ -167,6 +165,7 @@ namespace Ex02
             // Handle eating moves
             while (optionalEatMoves.Count > 0 && isMoveMade != eMoveMade.Quit)
             {
+
                 // Check if the entered move is a valid eating move
                 if (optionalEatMoves.Contains(validationResult))
                 {
@@ -177,8 +176,7 @@ namespace Ex02
                     isMoveMade = eMoveMade.Done;
 
                     string eaterFinalPos = validationResult.Substring(3);
-
-
+  
                     // Recalculate eat moves after the current move
                     optionalEatMoves = GetOptionalEatMoves(ref i_grid, size, playerSymbol);
                     bool hasExtraMove = false;
@@ -187,21 +185,22 @@ namespace Ex02
                     {
                         if (move.StartsWith(eaterFinalPos))
                         {
-                        Console.WriteLine("You have another eating move. Enter your next move:");
-                        validationResult = ValidateMove(Console.ReadLine());
-                        if (validationResult == "Q")
-                        {
-                            return eMoveMade.Quit;
-                        }
-                        if(validationResult.StartsWith(eaterFinalPos))
-
-                            hasExtraMove = true;
-                            break;
+                            Console.WriteLine("You have another eating move. Enter your next move:");
+                            validationResult = ValidateMove(Console.ReadLine());
+                            if (validationResult == "Q")
+                            {
+                                return eMoveMade.Quit;
+                            }
+                            if (validationResult.StartsWith(eaterFinalPos))
+                            {
+                                hasExtraMove = true;
+                                break;
+                            }
                         }
                     }
-                    if (hasExtraMove)
+                    if (!hasExtraMove)
                     {
-                        continue;
+                        break;
                     }
 
                 }
@@ -451,6 +450,7 @@ namespace Ex02
                 $"{MakePointsString(player1)}{Environment.NewLine}" +
                 $"{MakePointsString(player2)}{Environment.NewLine}");
         }
+
         private static string MakePointsString(Player player)
         {
             string playerPointsString = $"{player.Name}   ({player.Symbol}): {player.Points} points.";
