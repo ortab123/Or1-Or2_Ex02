@@ -17,6 +17,7 @@ namespace Ex02
         private void InitializeGrid(int i_Size)
         {
             int rowsForPieces;
+
             if (i_Size == 6)
             {
                 rowsForPieces = 2;
@@ -34,9 +35,9 @@ namespace Ex02
             {
                 for (int col = 0; col < i_Size; col++)
                 {
-                    if (row < rowsForPieces) // Top rows for O pieces
+                    if (row < rowsForPieces)
                     {
-                        if ((row + col) % 2 == 1) // Alternate placement
+                        if ((row + col) % 2 == 1)
                         {
                             m_Grid[row, col] = ePieceType.O;
                         }
@@ -44,10 +45,11 @@ namespace Ex02
                         {
                             m_Grid[row, col] = ePieceType.None;
                         }
+
                     }
-                    else if (row >= i_Size - rowsForPieces) // Bottom rows for X pieces
+                    else if (row >= i_Size - rowsForPieces)
                     {
-                        if ((row + col) % 2 == 1) // Alternate placement
+                        if ((row + col) % 2 == 1)
                         {
                             m_Grid[row, col] = ePieceType.X;
                         }
@@ -56,7 +58,7 @@ namespace Ex02
                             m_Grid[row, col] = ePieceType.None;
                         }
                     }
-                    else // Middle rows are empty
+                    else
                     {
                         m_Grid[row, col] = ePieceType.None;
                     }

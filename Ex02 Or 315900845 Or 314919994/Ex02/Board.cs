@@ -5,17 +5,16 @@ namespace Ex02
     public class Board
     {
         private static Grid m_Grid;
-
         private static int m_Size { get; set; } 
 
-        public Board(int i_Size) //Ctor
+        public Board(int i_Size)
         {
             m_Size = i_Size;
             m_Grid = new Grid(i_Size);
             PrintBoard(ref m_Grid);
         }
 
-        public static void PrintBoard(ref Grid i_Grid) 
+        public static void PrintBoard(ref Grid io_Grid) 
         {
             ConsoleUtils.Screen.Clear();
             Console.Write("   ");
@@ -33,13 +32,13 @@ namespace Ex02
 
                 for (int col = 0; col < m_Size; col++)
                 {
-                    if(i_Grid.GetPieceAt(row,col) == ePieceType.None)
+                    if(io_Grid.GetPieceAt(row,col) == ePieceType.None)
                     {
                         Console.Write("   |");
                     }
                     else 
                     {
-                        string pieceSymbol = i_Grid.GetPieceAt(row, col).ToString();
+                        string pieceSymbol = io_Grid.GetPieceAt(row, col).ToString();
                         Console.Write($" {pieceSymbol} |");
                     }   
                 }
@@ -55,6 +54,8 @@ namespace Ex02
 
         public static int SetBoardSize()
         {
+            int sizeToReturn;
+
             while (true)
             {
                 Console.WriteLine($"Please select board size:{Environment.NewLine}1. 6{Environment.NewLine}2. 8{Environment.NewLine}3. 10");
@@ -62,19 +63,26 @@ namespace Ex02
 
                 if (choice == "1")
                 {
-                    return 6;
+                    sizeToReturn = 6;
+                    break;
                 }
+
                 if (choice == "2")
                 {
-                    return 8;
+                    sizeToReturn = 8;
+                    break;
                 }
+
                 if (choice == "3")
                 {
-                    return 10;
+                    sizeToReturn = 10;
+                    break;
                 }
 
                 Console.WriteLine("Invalid board size. Please try again.");
             }
+
+            return sizeToReturn;
         }
 
         public static ePlayerType GetPlayerOrComputerGame()
@@ -82,6 +90,7 @@ namespace Ex02
             while (true)
             {
                 ePlayerType eGameType = new ePlayerType();
+
                 Console.WriteLine($"Do you want to play against another player or the computer?{Environment.NewLine}1. Player vs. player{Environment.NewLine}2. Player vs. computer");
                 string choice = Console.ReadLine();
 
@@ -91,6 +100,7 @@ namespace Ex02
                     {
                         eGameType = ePlayerType.Regular;
                     }
+
                     if (choice == "2")
                     {
                         eGameType = ePlayerType.Computer;

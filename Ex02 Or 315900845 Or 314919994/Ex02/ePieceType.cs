@@ -3,7 +3,7 @@ namespace Ex02
 {
     public enum ePieceType
     {
-        None, // ערך ברירת מחדל
+        None,
         X,
         O,
         K,

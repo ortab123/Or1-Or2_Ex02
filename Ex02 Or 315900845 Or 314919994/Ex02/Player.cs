@@ -1,29 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using static Ex02.Game;
 
 namespace Ex02
 {
     public class Player
     {
-        public string Name { get; private set; }
-        public char Symbol { get; private set; } // 'X' or 'O'
-        public int Points { get; set; }
+        public string m_Name { get; private set; }
+        public char m_Symbol { get; private set; }
+        public int m_Points { get; set; }
 
         public Player(string name, char symbol, int points)
         {
-            Name = name;
-            Symbol = symbol;
-            Points = points;
+            m_Name = name;
+            m_Symbol = symbol;
+            m_Points = points;
         }
 
-        public static string GetValidatePlayerName(string playerPrompt)
+        public static string GetValidatePlayerName(string i_PlayerPrompt)
         {
             while (true)
             {
-                Console.WriteLine($"{playerPrompt}, enter your name (max 20 characters, no spaces):");
+                Console.WriteLine($"{i_PlayerPrompt}, enter your name (max 20 characters, no spaces):");
                 string name = Console.ReadLine();
 
                 if (!string.IsNullOrWhiteSpace(name) && name.Length <= 20 && !name.Contains(" "))
@@ -36,40 +34,39 @@ namespace Ex02
             }
         }
 
-        public static Player GetPlayerOrComputer(ePlayerType choice)
+        public static Player GetPlayerOrComputer(ePlayerType i_choice)
         {
             Player player = null;
             char playerSymbol = 'O';
 
-            switch (choice)
+            switch (i_choice)
             {
                 case ePlayerType.Regular:
                     string player2Name = Player.GetValidatePlayerName("Player 2");
                     player = new Player(player2Name, playerSymbol, 0);
                     break;
+
                 case ePlayerType.Computer:
                     player = new Player("Computer", playerSymbol, 0);
                     break;
+
             }
 
             return player;
         }
 
-        public eMoveMade MakeComputerMove(ref Grid i_grid, Player i_player)
+        public eMoveMade MakeComputerMove(ref Grid io_Grid, Player i_Player)
         {
-            char playerSymbol = i_player.Symbol;
-            int size = i_grid.Size;
+            char playerSymbol = i_Player.m_Symbol;
+            int size = io_Grid.m_Size;
             eMoveMade isMoveMade = new eMoveMade();
-
-            List<string> optionalEatMoves = GetOptionalEatMoves(ref i_grid, size, playerSymbol);
-            List<string> optionalMoves = GetOptionalMoves(ref i_grid, size, playerSymbol);
             bool isEat = false;
-
             int randomIndex;
             string nextMoveString;
-            Random random = new Random();
 
-            // need a random number to choose from optional moves
+            List<string> optionalEatMoves = getOptionalEatMoves(ref io_Grid, size, playerSymbol);
+            List<string> optionalMoves = getOptionalMoves(ref io_Grid, size, playerSymbol);
+            Random random = new Random();
 
             while (optionalEatMoves.Count > 0)
             {
@@ -77,28 +74,23 @@ namespace Ex02
                 randomIndex = random.Next(0, optionalEatMoves.Count);
                 nextMoveString = optionalEatMoves[randomIndex];
 
-
                 while (Console.KeyAvailable)
                 {
-                    Console.ReadKey(true); // Discard all leftover key inputs
+                    Console.ReadKey(true);
                 }
 
-                // Need to press "Enter" to reavel computer move - wait for player
                 Console.WriteLine("Computer's Turn (press 'enter' to see it's move)");
                 Console.ReadLine();
 
-
-                i_grid = UpdatingBoard(nextMoveString, ref i_grid, size, playerSymbol);
-                Board.PrintBoard(ref i_grid);
-                Console.WriteLine($"Computer's move was ({i_player.Symbol}): {nextMoveString}");
+                io_Grid = UpdatingBoard(nextMoveString, ref io_Grid, size, playerSymbol);
+                Board.PrintBoard(ref io_Grid);
+                Console.WriteLine($"Computer's move was ({i_Player.m_Symbol}): {nextMoveString}");
                 isMoveMade = eMoveMade.Done;
 
                 string eaterFinalPos = nextMoveString.Substring(3);
 
-                // Recalculate eat moves after the current move
-                optionalEatMoves = GetOptionalEatMoves(ref i_grid, size, playerSymbol);
+                optionalEatMoves = getOptionalEatMoves(ref io_Grid, size, playerSymbol);
                 bool hasExtraMove = false;
-
 
                 foreach (string move in optionalEatMoves)
                 {
@@ -121,16 +113,15 @@ namespace Ex02
                 nextMoveString = optionalMoves[randomIndex];
                 while (Console.KeyAvailable)
                 {
-                    Console.ReadKey(true); // Discard all leftover key inputs
+                    Console.ReadKey(true);
                 }
 
-                // Need to press "Enter" to reavel computer move - wait for player
                 Console.WriteLine("Computer's Turn (press 'enter' to see it's move)");
                 Console.ReadLine();
 
-                i_grid = UpdatingBoard(nextMoveString, ref i_grid, size, playerSymbol);
-                Board.PrintBoard(ref i_grid);
-                Console.WriteLine($"Computer's move was ({i_player.Symbol}): {nextMoveString}");
+                io_Grid = UpdatingBoard(nextMoveString, ref io_Grid, size, playerSymbol);
+                Board.PrintBoard(ref io_Grid);
+                Console.WriteLine($"Computer's move was ({i_Player.m_Symbol}): {nextMoveString}");
                 isMoveMade = eMoveMade.Done;
             }
 
@@ -142,43 +133,37 @@ namespace Ex02
             return isMoveMade;
         }
 
-        public eMoveMade MakePlayerMove(ref Grid i_grid, Player i_player)
+        public eMoveMade MakePlayerMove(ref Grid io_Grid, Player i_Player)
         {
 
-            int size = i_grid.Size;
-            string validationResult = ValidateMove(Console.ReadLine());
-
+            int size = io_Grid.m_Size;
             eMoveMade isMoveMade = new eMoveMade();
 
+            string validationResult = ValidateMove(Console.ReadLine());
 
             if (validationResult == "Q")
             {
                 isMoveMade = eMoveMade.Quit;
             }
 
-            char playerSymbol = i_player.Symbol;
-            List<string> optionalEatMoves = GetOptionalEatMoves(ref i_grid, size, playerSymbol);
-            List<string> optionalMoves = GetOptionalMoves(ref i_grid, size, playerSymbol);
+            char playerSymbol = i_Player.m_Symbol;
+            List<string> optionalEatMoves = getOptionalEatMoves(ref io_Grid, size, playerSymbol);
+            List<string> optionalMoves = getOptionalMoves(ref io_Grid, size, playerSymbol);
 
             bool isEat = false;
 
-            // Handle eating moves
             while (optionalEatMoves.Count > 0 && isMoveMade != eMoveMade.Quit)
             {
-
-                // Check if the entered move is a valid eating move
                 if (optionalEatMoves.Contains(validationResult))
                 {
                     isEat = true;
-                    i_grid = UpdatingBoard(validationResult, ref i_grid, size, playerSymbol);
-                    Board.PrintBoard(ref i_grid);
-                    Console.WriteLine($"{i_player.Name}'s move was ({i_player.Symbol}): {validationResult}");
+                    io_Grid = UpdatingBoard(validationResult, ref io_Grid, size, playerSymbol);
+                    Board.PrintBoard(ref io_Grid);
+                    Console.WriteLine($"{i_Player.m_Name}'s move was ({i_Player.m_Symbol}): {validationResult}");
                     isMoveMade = eMoveMade.Done;
-
                     string eaterFinalPos = validationResult.Substring(3);
   
-                    // Recalculate eat moves after the current move
-                    optionalEatMoves = GetOptionalEatMoves(ref i_grid, size, playerSymbol);
+                    optionalEatMoves = getOptionalEatMoves(ref io_Grid, size, playerSymbol);
                     bool hasExtraMove = false;
 
                     foreach (string move in optionalEatMoves)
@@ -192,27 +177,29 @@ namespace Ex02
                                 Console.WriteLine("Wrong move, You have to you the same piece you used prevoiusly.");
                                 validationResult = ValidateMove(Console.ReadLine());
                             }
-                            // בדיקה רק אם הצעד שהכניס הוא הצעד move אז תעשה
+
                             if (validationResult == "Q")
                             {
-                                return eMoveMade.Quit;
+                                isMoveMade = eMoveMade.Quit;
+                                break;
                             }
+
                             if (validationResult.StartsWith(eaterFinalPos))
                             {
                                 hasExtraMove = true;
-                                i_grid = UpdatingBoard(validationResult, ref i_grid, size, playerSymbol);
-                                Board.PrintBoard(ref i_grid);
-                                Console.WriteLine($"{i_player.Name}'s move was ({i_player.Symbol}): {validationResult}");
+                                io_Grid = UpdatingBoard(validationResult, ref io_Grid, size, playerSymbol);
+                                Board.PrintBoard(ref io_Grid);
+                                Console.WriteLine($"{i_Player.m_Name}'s move was ({i_Player.m_Symbol}): {validationResult}");
                                 isMoveMade = eMoveMade.Done;
                                 break;
                             }
                         }
                     }
+
                     if (hasExtraMove)
                     {
                         break;
                     }
-
                 }
                 else
                 {
@@ -226,14 +213,13 @@ namespace Ex02
                 }
             }
 
-            // Handle regular moves if no eating moves are available
             while (!isEat && optionalMoves.Count > 0 && isMoveMade != eMoveMade.Quit)
             {
                 if (optionalMoves.Contains(validationResult))
                 {
-                    i_grid = UpdatingBoard(validationResult, ref i_grid, size, playerSymbol);
-                    Board.PrintBoard(ref i_grid);
-                    Console.WriteLine($"{i_player.Name}'s move was ({i_player.Symbol}): {validationResult}");
+                    io_Grid = UpdatingBoard(validationResult, ref io_Grid, size, playerSymbol);
+                    Board.PrintBoard(ref io_Grid);
+                    Console.WriteLine($"{i_Player.m_Name}'s move was ({i_Player.m_Symbol}): {validationResult}");
                     isMoveMade = eMoveMade.Done;
                     break;
                 }
@@ -258,62 +244,56 @@ namespace Ex02
             return isMoveMade;
         }
 
-        public static List<string> GetOptionalMoves(ref Grid i_grid, int i_size, char i_symbol)
+        private static List<string> getOptionalMoves(ref Grid io_Grid, int i_Size, char i_Symbol)
         {
             List<string> optionalMoves = new List<string>();
             ePieceType regularPiece = ePieceType.None, kingPiece = ePieceType.None;
 
-            if (i_symbol == 'O')
+            if (i_Symbol == 'O')
             {
                 regularPiece = ePieceType.O;
                 kingPiece = ePieceType.U;
             }
-            else if (i_symbol == 'X')
+            else if (i_Symbol == 'X')
             {
                 regularPiece = ePieceType.X;
                 kingPiece = ePieceType.K;
             }
 
-            for (int row = 0; row < i_size; row++)
+            for (int row = 0; row < i_Size; row++)
             {
-                for (int col = 0; col < i_size; col++)
+                for (int col = 0; col < i_Size; col++)
                 {
-                    ePieceType piece = i_grid.GetPieceAt(row, col);
+                    ePieceType piece = io_Grid.GetPieceAt(row, col);
                     if (piece == regularPiece || piece == kingPiece)
                     {
-                        // עבור 'O' ו-'U' - דילוג קדימה לכיוון מטה
                         if (piece == ePieceType.O || piece == ePieceType.U)
                         {
-                            // Move Forward Left
-                            if (row + 1 < i_size && col - 1 >= 0 &&
-                                i_grid.GetPieceAt(row + 1, col - 1) == ePieceType.None)
+                            if (row + 1 < i_Size && col - 1 >= 0 &&
+                                io_Grid.GetPieceAt(row + 1, col - 1) == ePieceType.None)
                             {
                                 string move = ConvertStepToString(row, col, row + 1, col - 1);
                                 optionalMoves.Add(move);
                             }
 
-                            // Move Forward Right
-                            if (row + 1 < i_size && col + 1 < i_size &&
-                                i_grid.GetPieceAt(row + 1, col + 1) == ePieceType.None)
+                            if (row + 1 < i_Size && col + 1 < i_Size &&
+                                io_Grid.GetPieceAt(row + 1, col + 1) == ePieceType.None)
                             {
                                 string move = ConvertStepToString(row, col, row + 1, col + 1);
                                 optionalMoves.Add(move);
                             }
 
-                            // עבור 'U' (מלך 'O') - דילוג אחורה לכיוון למעלה
                             if (piece == ePieceType.U)
                             {
-                                // Move Backward Left
                                 if (row - 1 >= 0 && col - 1 >= 0 &&
-                                    i_grid.GetPieceAt(row - 1, col - 1) == ePieceType.None)
+                                    io_Grid.GetPieceAt(row - 1, col - 1) == ePieceType.None)
                                 {
                                     string move = ConvertStepToString(row, col, row - 1, col - 1);
                                     optionalMoves.Add(move);
                                 }
 
-                                // Move Backward Right
-                                if (row - 1 >= 0 && col + 1 < i_size &&
-                                    i_grid.GetPieceAt(row - 1, col + 1) == ePieceType.None)
+                                if (row - 1 >= 0 && col + 1 < i_Size &&
+                                    io_Grid.GetPieceAt(row - 1, col + 1) == ePieceType.None)
                                 {
                                     string move = ConvertStepToString(row, col, row - 1, col + 1);
                                     optionalMoves.Add(move);
@@ -321,41 +301,35 @@ namespace Ex02
                             }
                         }
 
-                        // עבור 'X' ו-'K' - דילוג קדימה לכיוון מעלה
                         if (piece == ePieceType.X || piece == ePieceType.K)
                         {
-                            // Move Forward Left
                             if (row - 1 >= 0 && col - 1 >= 0 &&
-                                i_grid.GetPieceAt(row - 1, col - 1) == ePieceType.None)
+                                io_Grid.GetPieceAt(row - 1, col - 1) == ePieceType.None)
                             {
                                 string move = ConvertStepToString(row, col, row - 1, col - 1);
 
                                 optionalMoves.Add(move);
                             }
 
-                            // Move Forward Right
-                            if (row - 1 >= 0 && col + 1 < i_size &&
-                                i_grid.GetPieceAt(row - 1, col + 1) == ePieceType.None)
+                            if (row - 1 >= 0 && col + 1 < i_Size &&
+                                io_Grid.GetPieceAt(row - 1, col + 1) == ePieceType.None)
                             {
                                 string move = ConvertStepToString(row, col, row - 1, col + 1);
 
                                 optionalMoves.Add(move);
                             }
 
-                            // עבור 'K' (מלך 'X') - דילוג אחורה לכיוון למטה
                             if (piece == ePieceType.K)
                             {
-                                // Move Backward Left
-                                if (row + 1 < i_size && col - 1 >= 0 &&
-                                    i_grid.GetPieceAt(row + 1, col - 1) == ePieceType.None)
+                                if (row + 1 < i_Size && col - 1 >= 0 &&
+                                    io_Grid.GetPieceAt(row + 1, col - 1) == ePieceType.None)
                                 {
                                     string move = ConvertStepToString(row, col, row + 1, col - 1);
                                     optionalMoves.Add(move);
                                 }
 
-                                // Move Backward Right
-                                if (row + 1 < i_size && col + 1 < i_size &&
-                                    i_grid.GetPieceAt(row + 1, col + 1) == ePieceType.None)
+                                if (row + 1 < i_Size && col + 1 < i_Size &&
+                                    io_Grid.GetPieceAt(row + 1, col + 1) == ePieceType.None)
                                 {
                                     string move = ConvertStepToString(row, col, row + 1, col + 1);
                                     optionalMoves.Add(move);
@@ -365,24 +339,24 @@ namespace Ex02
                     }
                 }
             }
+
             return optionalMoves;
         }
 
-        public static List<string> GetOptionalEatMoves(ref Grid grid, int size, char playerSymbol)
+        private static List<string> getOptionalEatMoves(ref Grid io_Grid, int i_Size, char i_PlayerSymbol)
         {
             List<string> optionalEatMoves = new List<string>();
             ePieceType regularPiece = ePieceType.None, kingPiece = ePieceType.None;
             ePieceType opponentRegular = ePieceType.None, opponentKing = ePieceType.None;
 
-            // Initialize piece types based on playerSymbol
-            if (playerSymbol == 'O')
+            if (i_PlayerSymbol == 'O')
             {
                 regularPiece = ePieceType.O;
                 kingPiece = ePieceType.U;
                 opponentRegular = ePieceType.X;
                 opponentKing = ePieceType.K;
             }
-            else if (playerSymbol == 'X')
+            else if (i_PlayerSymbol == 'X')
             {
                 regularPiece = ePieceType.X;
                 kingPiece = ePieceType.K;
@@ -390,44 +364,39 @@ namespace Ex02
                 opponentKing = ePieceType.U;
             }
 
-            for (int row = 0; row < size; row++)
+            for (int row = 0; row < i_Size; row++)
             {
-                for (int col = 0; col < size; col++)
+                for (int col = 0; col < i_Size; col++)
                 {
-                    // Check if the piece is regular or king
-                    if (grid.GetPieceAt(row, col) == regularPiece || grid.GetPieceAt(row, col) == kingPiece)
+                    if (io_Grid.GetPieceAt(row, col) == regularPiece || io_Grid.GetPieceAt(row, col) == kingPiece)
                     {
-                        // Regular pieces only move in specific directions
-                        if (grid.GetPieceAt(row, col) == regularPiece)
+                        if (io_Grid.GetPieceAt(row, col) == regularPiece)
                         {
-                            // For 'O', check downward eats
-                            if (playerSymbol == 'O')
+                            if (i_PlayerSymbol == 'O')
                             {
-                                AddEatMoveIfValid(optionalEatMoves, ref grid, row, col, size,
+                                addEatMoveIfValid(optionalEatMoves, ref io_Grid, row, col, i_Size,
                                     1, -1, opponentRegular, opponentKing);
-                                AddEatMoveIfValid(optionalEatMoves, ref grid, row, col, size,
+                                addEatMoveIfValid(optionalEatMoves, ref io_Grid, row, col, i_Size,
                                     1, 1, opponentRegular, opponentKing);
                             }
-                            // For 'X', check upward eats
-                            else if (playerSymbol == 'X')
+                            else
                             {
-                                AddEatMoveIfValid(optionalEatMoves, ref grid, row, col, size,
+                                addEatMoveIfValid(optionalEatMoves, ref io_Grid, row, col, i_Size,
                                     -1, -1, opponentRegular, opponentKing);
-                                AddEatMoveIfValid(optionalEatMoves, ref grid, row, col, size,
+                                addEatMoveIfValid(optionalEatMoves, ref io_Grid, row, col, i_Size,
                                     -1, 1, opponentRegular, opponentKing);
                             }
                         }
 
-                        // Kings can move in all directions
-                        if (grid.GetPieceAt(row, col) == kingPiece)
+                        if (io_Grid.GetPieceAt(row, col) == kingPiece)
                         {
-                            AddEatMoveIfValid(optionalEatMoves, ref grid, row, col, size,
+                            addEatMoveIfValid(optionalEatMoves, ref io_Grid, row, col, i_Size,
                                 1, -1, opponentRegular, opponentKing);
-                            AddEatMoveIfValid(optionalEatMoves, ref grid, row, col, size,
+                            addEatMoveIfValid(optionalEatMoves, ref io_Grid, row, col, i_Size,
                                 1, 1, opponentRegular, opponentKing);
-                            AddEatMoveIfValid(optionalEatMoves, ref grid, row, col, size,
+                            addEatMoveIfValid(optionalEatMoves, ref io_Grid, row, col, i_Size,
                                 -1, -1, opponentRegular, opponentKing);
-                            AddEatMoveIfValid(optionalEatMoves, ref grid, row, col, size,
+                            addEatMoveIfValid(optionalEatMoves, ref io_Grid, row, col, i_Size,
                                 -1, 1, opponentRegular, opponentKing);
                         }
                     }
@@ -437,33 +406,36 @@ namespace Ex02
             return optionalEatMoves;
         }
 
-        private static void AddEatMoveIfValid(List<string> optionalEatMoves, ref Grid grid, int row, int col,
-            int size, int rowDir, int colDir, ePieceType opponentRegular, ePieceType opponentKing)
+        private static void addEatMoveIfValid(List<string> i_OptionalEatMoves, ref Grid io_Grid,
+            int i_Row, int i_Col, int i_Size, int i_RowDir, int i_ColDir,
+            ePieceType i_OpponentRegular, ePieceType i_OpponentKing)
         {
-            int targetRow = row + rowDir * 2;   // Target position after the jump
-            int targetCol = col + colDir * 2;
-            int middleRow = row + rowDir;      // Position of the opponent's piece
-            int middleCol = col + colDir;
+            int targetRow = i_Row + i_RowDir * 2;
+            int targetCol = i_Col + i_ColDir * 2;
+            int middleRow = i_Row + i_RowDir;
+            int middleCol = i_Col + i_ColDir;
 
-            if (targetRow >= 0 && targetRow < size && targetCol >= 0 && targetCol < size && // Ensure within bounds
-                (grid.GetPieceAt(middleRow, middleCol) == opponentRegular || grid.GetPieceAt(middleRow, middleCol) == opponentKing) && // Opponent's piece present
-                grid.GetPieceAt(targetRow, targetCol) == ePieceType.None) // Target cell is empty
+            if (targetRow >= 0 && targetRow < i_Size && targetCol >= 0 && targetCol < i_Size &&
+                (io_Grid.GetPieceAt(middleRow, middleCol) == i_OpponentRegular 
+                || io_Grid.GetPieceAt(middleRow, middleCol) == i_OpponentKing) &&
+                io_Grid.GetPieceAt(targetRow, targetCol) == ePieceType.None)
             {
-                string move = ConvertStepToString(row, col, targetRow, targetCol);
-                optionalEatMoves.Add(move);
+                string move = ConvertStepToString(i_Row, i_Col, targetRow, targetCol);
+                i_OptionalEatMoves.Add(move);
             }
         }
 
-        public static void PrintScoreBoard(Player player1, Player player2)
+        public static void PrintScoreBoard(Player i_Player1, Player i_Player2)
         {
             Console.WriteLine($"{Environment.NewLine}Score Board{Environment.NewLine}" +
-                $"{MakePointsString(player1)}{Environment.NewLine}" +
-                $"{MakePointsString(player2)}{Environment.NewLine}");
+                $"{makePointsString(i_Player1)}{Environment.NewLine}" +
+                $"{makePointsString(i_Player2)}{Environment.NewLine}");
         }
 
-        private static string MakePointsString(Player player)
+        private static string makePointsString(Player player)
         {
-            string playerPointsString = $"{player.Name}   ({player.Symbol}): {player.Points} points.";
+            string playerPointsString = $"{player.m_Name}   ({player.m_Symbol}): {player.m_Points} points.";
+            
             return playerPointsString;
         }
     }
