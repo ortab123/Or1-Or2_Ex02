@@ -11,6 +11,5 @@ namespace Ex02
         {
             ConsuleUI.GameStartMenu();
         }
-
     }
 }

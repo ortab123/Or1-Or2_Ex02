@@ -187,6 +187,12 @@ namespace Ex02
                         {
                             Console.WriteLine("You have another eating move. Enter your next move:");
                             validationResult = ValidateMove(Console.ReadLine());
+                            while (move != validationResult)
+                            {
+                                Console.WriteLine("Wrong move, You have to you the same piece you used prevoiusly.");
+                                validationResult = ValidateMove(Console.ReadLine());
+                            }
+                            // בדיקה רק אם הצעד שהכניס הוא הצעד move אז תעשה
                             if (validationResult == "Q")
                             {
                                 return eMoveMade.Quit;
@@ -194,11 +200,15 @@ namespace Ex02
                             if (validationResult.StartsWith(eaterFinalPos))
                             {
                                 hasExtraMove = true;
+                                i_grid = UpdatingBoard(validationResult, ref i_grid, size, playerSymbol);
+                                Board.PrintBoard(ref i_grid);
+                                Console.WriteLine($"{i_player.Name}'s move was ({i_player.Symbol}): {validationResult}");
+                                isMoveMade = eMoveMade.Done;
                                 break;
                             }
                         }
                     }
-                    if (!hasExtraMove)
+                    if (hasExtraMove)
                     {
                         break;
                     }

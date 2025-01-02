@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Ex02
 {
@@ -20,6 +16,5 @@ namespace Ex02
             Game game = new Game(player1, player2, boardSize, playerModeChoice);
             game.Start();
         }
-
     }
 }

@@ -1,31 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace Ex02
 {
     public class Grid
     {
         private ePieceType[,] m_Grid;
-        public int Size { get; private set; }
 
-        public Grid(int size)
+        public int m_Size { get; private set; }
+
+        public Grid(int i_Size)
         {
-            Size = size;
-            m_Grid = new ePieceType[size, size];
-            InitializeGrid(size);
+            m_Size = i_Size;
+            m_Grid = new ePieceType[i_Size, i_Size];
+            InitializeGrid(i_Size);
         }
 
-        private void InitializeGrid(int size)
+        private void InitializeGrid(int i_Size)
         {
             int rowsForPieces;
-            if (size == 6)
+            if (i_Size == 6)
             {
                 rowsForPieces = 2;
             }
-            else if (size == 8)
+            else if (i_Size == 8)
             {
                 rowsForPieces = 3;
             }
@@ -34,9 +30,9 @@ namespace Ex02
                 rowsForPieces = 4 ;
             }
 
-            for (int row = 0; row < size; row++)
+            for (int row = 0; row < i_Size; row++)
             {
-                for (int col = 0; col < size; col++)
+                for (int col = 0; col < i_Size; col++)
                 {
                     if (row < rowsForPieces) // Top rows for O pieces
                     {
@@ -49,7 +45,7 @@ namespace Ex02
                             m_Grid[row, col] = ePieceType.None;
                         }
                     }
-                    else if (row >= size - rowsForPieces) // Bottom rows for X pieces
+                    else if (row >= i_Size - rowsForPieces) // Bottom rows for X pieces
                     {
                         if ((row + col) % 2 == 1) // Alternate placement
                         {
@@ -68,14 +64,14 @@ namespace Ex02
             }
         }
 
-        public ePieceType GetPieceAt(int row, int col)
+        public ePieceType GetPieceAt(int I_row, int i_Col)
         {
-            return m_Grid[row, col];
+            return m_Grid[I_row, i_Col];
         }
 
-        public void SetPieceAt(int row, int col, ePieceType pieceType)
+        public void SetPieceAt(int i_Row, int i_Col, ePieceType i_PieceType)
         {
-            m_Grid[row, col] = pieceType;
+            m_Grid[i_Row, i_Col] = i_PieceType;
         }
     }
 }

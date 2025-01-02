@@ -1,56 +1,54 @@
 ﻿using System;
-using System.Runtime.CompilerServices;
 
 namespace Ex02
 {
     public class Board
     {
-        private static Grid grid;
+        private static Grid m_Grid;
 
-        public static int Size { get; private set; } 
+        private static int m_Size { get; set; } 
 
-        public Board(int size) //Ctor
+        public Board(int i_Size) //Ctor
         {
-            Size = size;
-            grid = new Grid(size);
-            PrintBoard(ref grid);
+            m_Size = i_Size;
+            m_Grid = new Grid(i_Size);
+            PrintBoard(ref m_Grid);
         }
 
-        public static void PrintBoard(ref Grid grid) 
+        public static void PrintBoard(ref Grid i_Grid) 
         {
-            Ex02.ConsoleUtils.Screen.Clear();
-
+            ConsoleUtils.Screen.Clear();
             Console.Write("   ");
 
-            for (int col = 0; col < Size; col++)
+            for (int col = 0; col < m_Size; col++)
             {
                 Console.Write($" {(char)('a' + col)}  ");
             }
 
-            Console.WriteLine($"{Environment.NewLine}  " + new string('=', Size * 4 + 1));
+            Console.WriteLine($"{Environment.NewLine}  " + new string('=', m_Size * 4 + 1));
 
-            for (int row = 0; row < Size; row++)
+            for (int row = 0; row < m_Size; row++)
             {
-
                 Console.Write($"{(char)('A' + row)} |");
 
-                for (int col = 0; col < Size; col++)
+                for (int col = 0; col < m_Size; col++)
                 {
-                    if(grid.GetPieceAt(row,col) == ePieceType.None)
+                    if(i_Grid.GetPieceAt(row,col) == ePieceType.None)
                     {
                         Console.Write("   |");
                     }
                     else 
                     {
-                        string pieceSymbol = grid.GetPieceAt(row, col).ToString();
+                        string pieceSymbol = i_Grid.GetPieceAt(row, col).ToString();
                         Console.Write($" {pieceSymbol} |");
                     }   
                 }
+
                 Console.WriteLine();
 
-                if (row < Size)
+                if (row < m_Size)
                 {
-                    Console.WriteLine("  " + new string('=', Size * 4 + 1));
+                    Console.WriteLine("  " + new string('=', m_Size * 4 + 1));
                 }
             }
         }
@@ -61,6 +59,7 @@ namespace Ex02
             {
                 Console.WriteLine($"Please select board size:{Environment.NewLine}1. 6{Environment.NewLine}2. 8{Environment.NewLine}3. 10");
                 string choice = Console.ReadLine();
+
                 if (choice == "1")
                 {
                     return 6;
@@ -73,9 +72,9 @@ namespace Ex02
                 {
                     return 10;
                 }
+
                 Console.WriteLine("Invalid board size. Please try again.");
             }
-
         }
 
         public static ePlayerType GetPlayerOrComputerGame()
@@ -85,6 +84,7 @@ namespace Ex02
                 ePlayerType eGameType = new ePlayerType();
                 Console.WriteLine($"Do you want to play against another player or the computer?{Environment.NewLine}1. Player vs. player{Environment.NewLine}2. Player vs. computer");
                 string choice = Console.ReadLine();
+
                 if (!string.IsNullOrWhiteSpace(choice))
                 {
                     if (choice == "1")
@@ -95,6 +95,7 @@ namespace Ex02
                     {
                         eGameType = ePlayerType.Computer;
                     }
+                        
                     return eGameType;
                 }
 
@@ -104,8 +105,7 @@ namespace Ex02
 
         public Grid GetGrid()
         {
-            return grid;
+            return m_Grid;
         }
-
     }
 }
