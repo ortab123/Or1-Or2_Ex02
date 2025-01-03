@@ -11,33 +11,33 @@ namespace Ex02
         {
             m_Size = i_Size;
             m_Grid = new ePieceType[i_Size, i_Size];
-            InitializeGrid(i_Size);
+            initializeGrid(i_Size);
         }
 
-        private void InitializeGrid(int i_Size)
+        private void initializeGrid(int i_Size)
         {
             int rowsForPieces;
 
-            if (i_Size == 6)
+            if(i_Size == 6)
             {
                 rowsForPieces = 2;
             }
-            else if (i_Size == 8)
+            else if(i_Size == 8)
             {
                 rowsForPieces = 3;
             }
             else
             {
-                rowsForPieces = 4 ;
+                rowsForPieces = 4;
             }
 
-            for (int row = 0; row < i_Size; row++)
+            for(int row = 0; row < i_Size; row++)
             {
-                for (int col = 0; col < i_Size; col++)
+                for(int col = 0; col < i_Size; col++)
                 {
-                    if (row < rowsForPieces)
+                    if(row < rowsForPieces)
                     {
-                        if ((row + col) % 2 == 1)
+                        if((row + col) % 2 == 1)
                         {
                             m_Grid[row, col] = ePieceType.O;
                         }
@@ -47,9 +47,9 @@ namespace Ex02
                         }
 
                     }
-                    else if (row >= i_Size - rowsForPieces)
+                    else if(row >= i_Size - rowsForPieces)
                     {
-                        if ((row + col) % 2 == 1)
+                        if((row + col) % 2 == 1)
                         {
                             m_Grid[row, col] = ePieceType.X;
                         }
@@ -66,9 +66,9 @@ namespace Ex02
             }
         }
 
-        public ePieceType GetPieceAt(int I_row, int i_Col)
+        public ePieceType GetPieceAt(int I_Row, int i_Col)
         {
-            return m_Grid[I_row, i_Col];
+            return m_Grid[I_Row, i_Col];
         }
 
         public void SetPieceAt(int i_Row, int i_Col, ePieceType i_PieceType)

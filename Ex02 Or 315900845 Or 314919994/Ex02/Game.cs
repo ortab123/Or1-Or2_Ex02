@@ -24,34 +24,40 @@ namespace Ex02
             gameEndMenu(this);
         }
 
-        private static void littleGameProcess(ref Grid io_Grid, Player i_Player1,
-            Player i_Player2, ePlayerType i_PlayerType)
+        private static void littleGameProcess(
+            ref Grid io_Grid,
+            Player i_Player1,
+            Player i_Player2,
+            ePlayerType i_PlayerType)
         {
             Player currentPlayer = i_Player1;
-            Player loser;
+            Player loser = new Player();
             bool isGameOver = false;
 
-            while (true)
+            while(true)
             {
-                if (currentPlayer.m_Name != "Computer")
+                if(currentPlayer.m_Name != "Computer")
                 {
-                    Console.WriteLine($"{currentPlayer.m_Name}'s turn ({currentPlayer.m_Symbol}):" +
-                        $"{Environment.NewLine}{currentPlayer.m_Name}, enter your move (FROMROWfromcol>TOROWtocol) or 'Q' to quit:");
+                    Console.WriteLine(
+                        $"{currentPlayer.m_Name}'s turn ({currentPlayer.m_Symbol}):"
+                        + $"{Environment.NewLine}{currentPlayer.m_Name}, enter your move (FROMROWfromcol>TOROWtocol) or 'Q' to quit:");
                 }
 
 
-                if (i_PlayerType == ePlayerType.Regular)
+                if(i_PlayerType == ePlayerType.Regular)
                 {
-                    switch (currentPlayer.MakePlayerMove(ref io_Grid, currentPlayer))
+                    switch(currentPlayer.MakePlayerMove(ref io_Grid, currentPlayer))
                     {
                         case eMoveMade.Quit:
-                            Console.WriteLine($"{currentPlayer.m_Name} quit the game. {(i_Player1 == currentPlayer ? i_Player2.m_Name : i_Player1.m_Name)} wins!");
+                            Console.WriteLine(
+                                $"{currentPlayer.m_Name} quit the game. {(i_Player1 == currentPlayer ? i_Player2.m_Name : i_Player1.m_Name)} wins!");
                             isGameOver = true;
                             loser = currentPlayer;
                             break;
 
                         case eMoveMade.None:
-                            Console.WriteLine($"No possible moves for: {currentPlayer.m_Name}. {(i_Player1 == currentPlayer ? i_Player2.m_Name : i_Player1.m_Name)} wins!");
+                            Console.WriteLine(
+                                $"No possible moves for: {currentPlayer.m_Name}. {(i_Player1 == currentPlayer ? i_Player2.m_Name : i_Player1.m_Name)} wins!");
                             isGameOver = true;
                             loser = currentPlayer;
                             break;
@@ -60,15 +66,16 @@ namespace Ex02
                             int player1Tokens = countPlayerTokens(ref io_Grid, 'X');
                             int player2Tokens = countPlayerTokens(ref io_Grid, 'O');
 
-                            if (player1Tokens == 0)
+                            if(player1Tokens == 0)
                             {
                                 Console.WriteLine($"{i_Player2.m_Name} wins! No tokens left for {i_Player1.m_Name}.");
                                 isGameOver = true;
-                                loser = currentPlayer;
+                                loser = i_Player1;
                             }
-                            else if (player2Tokens == 0)
+                            else if(player2Tokens == 0)
                             {
                                 Console.WriteLine($"{i_Player1.m_Name} wins! No tokens left for {i_Player2.m_Name}.");
+                                loser = i_Player2;
                                 isGameOver = true;
                             }
 
@@ -88,15 +95,19 @@ namespace Ex02
                         moveMade = currentPlayer.MakePlayerMove(ref io_Grid, i_Player1);
                     }
 
-                    switch (moveMade)
+                    switch(moveMade)
                     {
                         case eMoveMade.Quit:
-                            Console.WriteLine($"{currentPlayer.m_Name} quit the game. {(i_Player1 == currentPlayer ? i_Player2.m_Name : i_Player1.m_Name)} wins!");
+                            Console.WriteLine(
+                                $"{currentPlayer.m_Name} quit the game. {(i_Player1 == currentPlayer ? i_Player2.m_Name : i_Player1.m_Name)} wins!");
                             isGameOver = true;
+                            loser = currentPlayer;
                             break;
 
                         case eMoveMade.None:
-                            Console.WriteLine($"No possible moves for: {currentPlayer.m_Name}. {(i_Player1 == currentPlayer ? i_Player2.m_Name : i_Player1.m_Name)} wins!");
+                            Console.WriteLine(
+                                $"No possible moves for: {currentPlayer.m_Name}. {(i_Player1 == currentPlayer ? i_Player2.m_Name : i_Player1.m_Name)} wins!");
+                            loser = currentPlayer;
                             isGameOver = true;
                             break;
 
@@ -104,14 +115,16 @@ namespace Ex02
                             int player1Tokens = countPlayerTokens(ref io_Grid, 'X');
                             int player2Tokens = countPlayerTokens(ref io_Grid, 'O');
 
-                            if (player1Tokens == 0)
+                            if(player1Tokens == 0)
                             {
                                 Console.WriteLine($"{i_Player2.m_Name} wins! No tokens left for {i_Player1.m_Name}.");
+                                loser = i_Player1;
                                 isGameOver = true;
                             }
-                            else if (player2Tokens == 0)
+                            else if(player2Tokens == 0)
                             {
                                 Console.WriteLine($"{i_Player1.m_Name} wins! No tokens left for {i_Player2.m_Name}.");
+                                loser = i_Player2;
                                 isGameOver = true;
                             }
 
@@ -119,34 +132,33 @@ namespace Ex02
                     }
                 }
 
-                if (isGameOver)
+                if(isGameOver)
                 {
-                    loser = currentPlayer;
                     break;
                 }
 
                 currentPlayer = (currentPlayer == i_Player1) ? i_Player2 : i_Player1;
             }
 
-            calculateScore(ref io_Grid,ref i_Player1,ref i_Player2, loser);
-            Player.PrintScoreBoard(i_Player1,i_Player2);
+            calculateScore(ref io_Grid, ref i_Player1, ref i_Player2, loser);
+            Player.PrintScoreBoard(i_Player1, i_Player2);
         }
 
-        private static eAnotherGame getPlayerChoiceForRemacth()
+        private static eAnotherGame getPlayerChoiceForRematch()
         {
             eAnotherGame eRematch = new eAnotherGame();
-            while (true)
+            while(true)
             {
                 Console.WriteLine($"1. No{Environment.NewLine}2. Yes");
                 string choice = Console.ReadLine();
-                if (!string.IsNullOrWhiteSpace(choice))
+                if(!string.IsNullOrWhiteSpace(choice))
                 {
-                    if (choice == "1")
+                    if(choice == "1")
                     {
                         eRematch = eAnotherGame.No;
                     }
 
-                    if (choice == "2")
+                    if(choice == "2")
                     {
                         eRematch = eAnotherGame.Yes;
                     }
@@ -168,17 +180,17 @@ namespace Ex02
             ePieceType regularPiece = playerSymbol == 'X' ? ePieceType.X : ePieceType.O;
             ePieceType kingPiece = playerSymbol == 'X' ? ePieceType.K : ePieceType.U;
 
-            for (int row = 0; row < io_Grid.m_Size; row++)
+            for(int row = 0; row < io_Grid.m_Size; row++)
             {
-                for (int col = 0; col < io_Grid.m_Size; col++)
+                for(int col = 0; col < io_Grid.m_Size; col++)
                 {
                     ePieceType piece = io_Grid.GetPieceAt(row, col);
-                    if (piece == regularPiece)
+                    if(piece == regularPiece)
                     {
                         score++;
                     }
 
-                    if (piece == kingPiece)
+                    if(piece == kingPiece)
                     {
                         score += 4;
                     }
@@ -188,20 +200,23 @@ namespace Ex02
             return score;
         }
 
-        private static void calculateScore(ref Grid io_Grid, ref Player io_Player1,
-            ref Player io_Player2, Player i_Loser)
+        private static void calculateScore(
+            ref Grid io_Grid,
+            ref Player io_Player1,
+            ref Player io_Player2,
+            Player i_Loser)
         {
             int firstPlayerPoints = countPlayerPoints(ref io_Grid, io_Player1);
             int secondPlayerPoints = countPlayerPoints(ref io_Grid, io_Player2);
             int scoreDifference = Math.Abs(firstPlayerPoints - secondPlayerPoints);
-            
-            if (io_Player1.m_Name == i_Loser.m_Name)
+
+            if(io_Player1.m_Name == i_Loser.m_Name)
             {
-                io_Player1.m_Points += scoreDifference;
+                io_Player2.m_Points += scoreDifference;
             }
             else
             {
-                io_Player2.m_Points += scoreDifference;
+                io_Player1.m_Points += scoreDifference;
             }
         }
 
@@ -209,15 +224,16 @@ namespace Ex02
         {
             bool keepPlaying = true;
 
-            while (keepPlaying)
+            while(keepPlaying)
             {
-                Console.WriteLine($"Thanks for playing Checkers with us!{Environment.NewLine}" +
-                    $"Do you want to play another game?{Environment.NewLine}" +
-                    $"Names, size, type and score will remain the same.");
+                Console.WriteLine(
+                    $"Thanks for playing Checkers with us!{Environment.NewLine}"
+                    + $"Do you want to play another game?{Environment.NewLine}"
+                    + $"Names, size, type and score will remain the same.");
 
-                eAnotherGame playerChoiceForRematch = getPlayerChoiceForRemacth();
+                eAnotherGame playerChoiceForRematch = getPlayerChoiceForRematch();
 
-                switch (playerChoiceForRematch)
+                switch(playerChoiceForRematch)
                 {
                     case eAnotherGame.No:
                         Console.WriteLine("Have a nice day!");
@@ -241,13 +257,13 @@ namespace Ex02
             ePieceType regularPiece = i_PlayerSymbol == 'X' ? ePieceType.X : ePieceType.O;
             ePieceType kingPiece = i_PlayerSymbol == 'X' ? ePieceType.K : ePieceType.U;
 
-            for (int row = 0; row < io_Grid.m_Size; row++)
+            for(int row = 0; row < io_Grid.m_Size; row++)
             {
-                for (int col = 0; col < io_Grid.m_Size; col++)
+                for(int col = 0; col < io_Grid.m_Size; col++)
                 {
                     ePieceType piece = io_Grid.GetPieceAt(row, col);
 
-                    if (piece == regularPiece || piece == kingPiece)
+                    if(piece == regularPiece || piece == kingPiece)
                     {
                         count++;
                     }
@@ -265,7 +281,7 @@ namespace Ex02
             char toColChar = (char)('a' + i_ToCol);
 
             string stepString = fromRowChar.ToString() + fromColChar + '>' + toRowChar + toColChar;
-            
+
             return stepString;
         }
 
@@ -273,22 +289,20 @@ namespace Ex02
         {
             string validatedMove = null;
 
-            while (validatedMove == null)
+            while(validatedMove == null)
             {
-                if (string.IsNullOrWhiteSpace(i_NextMoveString))
+                if(string.IsNullOrWhiteSpace(i_NextMoveString))
                 {
                     Console.WriteLine("Input cannot be empty. Try again.");
                 }
-                else if (i_NextMoveString.ToUpper() == "Q")
+                else if(i_NextMoveString.ToUpper() == "Q")
                 {
                     validatedMove = "Q";
                 }
-                else if (i_NextMoveString.Length == 5 &&
-                    char.IsUpper(i_NextMoveString[0]) &&
-                    char.IsLower(i_NextMoveString[1]) &&
-                    i_NextMoveString[2] == '>' &&
-                    char.IsUpper(i_NextMoveString[3]) &&
-                    char.IsLower(i_NextMoveString[4]))
+                else if(i_NextMoveString.Length == 5 && char.IsUpper(i_NextMoveString[0])
+                                                     && char.IsLower(i_NextMoveString[1]) && i_NextMoveString[2] == '>'
+                                                     && char.IsUpper(i_NextMoveString[3])
+                                                     && char.IsLower(i_NextMoveString[4]))
                 {
                     validatedMove = i_NextMoveString;
                 }
@@ -297,7 +311,7 @@ namespace Ex02
                     Console.WriteLine("Invalid input. Please enter move in format of Xx>Yy, or 'Q' to quit.");
                 }
 
-                if (validatedMove == null)
+                if(validatedMove == null)
                 {
                     i_NextMoveString = Console.ReadLine();
                 }
@@ -306,7 +320,7 @@ namespace Ex02
             return validatedMove;
         }
 
-        public static Grid UpdatingBoard(string i_Move,ref Grid io_Grid, int i_Size, char i_PlayerSymbol)
+        public static Grid UpdatingBoard(string i_Move, ref Grid io_Grid, int i_Size, char i_PlayerSymbol)
         {
             char fromRowChar = i_Move[0];
             char fromColChar = i_Move[1];
@@ -320,7 +334,7 @@ namespace Ex02
             int rowDiff = Math.Abs(toRow - fromRow);
             int colDiff = Math.Abs(toCol - fromCol);
 
-            if (rowDiff == 2 && colDiff == 2)
+            if(rowDiff == 2 && colDiff == 2)
             {
                 int eatenRow = (fromRow + toRow) / 2;
                 int eatenCol = (fromCol + toCol) / 2;
@@ -331,11 +345,11 @@ namespace Ex02
             io_Grid.SetPieceAt(toRow, toCol, io_Grid.GetPieceAt(fromRow, fromCol));
             io_Grid.SetPieceAt(fromRow, fromCol, ePieceType.None);
 
-            if (i_PlayerSymbol == 'O' && toRow == i_Size - 1)
+            if(i_PlayerSymbol == 'O' && toRow == i_Size - 1)
             {
                 io_Grid.SetPieceAt(toRow, toCol, ePieceType.U);
             }
-            else if (i_PlayerSymbol == 'X' && toRow == 0)
+            else if(i_PlayerSymbol == 'X' && toRow == 0)
             {
                 io_Grid.SetPieceAt(toRow, toCol, ePieceType.K);
             }

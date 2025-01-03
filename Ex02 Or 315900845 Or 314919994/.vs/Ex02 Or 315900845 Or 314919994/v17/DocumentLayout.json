@@ -3,12 +3,24 @@
   "WorkspaceRootPath": "C:\\Users\\robix\\Or1-Or2_Ex02\\Ex02 Or 315900845 Or 314919994\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{405E7B5F-9A21-4683-93C8-4B11A240689A}|Ex02\\Ex02.csproj|c:\\users\\robix\\or1-or2_ex02\\ex02 or 315900845 or 314919994\\ex02\\board.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{405E7B5F-9A21-4683-93C8-4B11A240689A}|Ex02\\Ex02.csproj|solutionrelative:ex02\\board.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{405E7B5F-9A21-4683-93C8-4B11A240689A}|Ex02\\Ex02.csproj|c:\\users\\robix\\or1-or2_ex02\\ex02 or 315900845 or 314919994\\ex02\\game.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{405E7B5F-9A21-4683-93C8-4B11A240689A}|Ex02\\Ex02.csproj|solutionrelative:ex02\\game.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{405E7B5F-9A21-4683-93C8-4B11A240689A}|Ex02\\Ex02.csproj|c:\\users\\robix\\or1-or2_ex02\\ex02 or 315900845 or 314919994\\ex02\\player.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{405E7B5F-9A21-4683-93C8-4B11A240689A}|Ex02\\Ex02.csproj|c:\\users\\robix\\or1-or2_ex02\\ex02 or 315900845 or 314919994\\ex02\\grid.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{405E7B5F-9A21-4683-93C8-4B11A240689A}|Ex02\\Ex02.csproj|solutionrelative:ex02\\grid.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{405E7B5F-9A21-4683-93C8-4B11A240689A}|Ex02\\Ex02.csproj|C:\\Users\\robix\\Or1-Or2_Ex02\\Ex02 Or 315900845 Or 314919994\\ex02\\player.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{405E7B5F-9A21-4683-93C8-4B11A240689A}|Ex02\\Ex02.csproj|solutionrelative:ex02\\player.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{405E7B5F-9A21-4683-93C8-4B11A240689A}|Ex02\\Ex02.csproj|c:\\users\\robix\\or1-or2_ex02\\ex02 or 315900845 or 314919994\\ex02\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{405E7B5F-9A21-4683-93C8-4B11A240689A}|Ex02\\Ex02.csproj|solutionrelative:ex02\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -18,8 +30,34 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 0,
           "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Board.cs",
+              "DocumentMoniker": "C:\\Users\\robix\\Or1-Or2_Ex02\\Ex02 Or 315900845 Or 314919994\\Ex02\\Board.cs",
+              "RelativeDocumentMoniker": "Ex02\\Board.cs",
+              "ToolTip": "C:\\Users\\robix\\Or1-Or2_Ex02\\Ex02 Or 315900845 Or 314919994\\Ex02\\Board.cs",
+              "RelativeToolTip": "Ex02\\Board.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-01-03T18:17:51.693Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\robix\\Or1-Or2_Ex02\\Ex02 Or 315900845 Or 314919994\\Ex02\\Program.cs",
+              "RelativeDocumentMoniker": "Ex02\\Program.cs",
+              "ToolTip": "C:\\Users\\robix\\Or1-Or2_Ex02\\Ex02 Or 315900845 Or 314919994\\Ex02\\Program.cs",
+              "RelativeToolTip": "Ex02\\Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-01-03T18:17:13.878Z",
+              "EditorCaption": ""
+            },
             {
               "$type": "Bookmark",
               "Name": "ST:128:0:{75188d03-9892-4ae2-abf1-207126247ce5}"
@@ -30,26 +68,39 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "Game.cs",
               "DocumentMoniker": "C:\\Users\\robix\\Or1-Or2_Ex02\\Ex02 Or 315900845 Or 314919994\\Ex02\\Game.cs",
               "RelativeDocumentMoniker": "Ex02\\Game.cs",
               "ToolTip": "C:\\Users\\robix\\Or1-Or2_Ex02\\Ex02 Or 315900845 Or 314919994\\Ex02\\Game.cs",
               "RelativeToolTip": "Ex02\\Game.cs",
-              "ViewState": "AgIAAL4AAAAAAAAAAAApwOQAAAA0AAAAAAAAAA==",
+              "ViewState": "AgIAAEkBAAAAAAAAAAAUwGcBAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-03T09:12:35.59Z",
+              "WhenOpened": "2025-01-03T17:24:26.326Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
+              "Title": "Grid.cs",
+              "DocumentMoniker": "C:\\Users\\robix\\Or1-Or2_Ex02\\Ex02 Or 315900845 Or 314919994\\Ex02\\Grid.cs",
+              "RelativeDocumentMoniker": "Ex02\\Grid.cs",
+              "ToolTip": "C:\\Users\\robix\\Or1-Or2_Ex02\\Ex02 Or 315900845 Or 314919994\\Ex02\\Grid.cs",
+              "RelativeToolTip": "Ex02\\Grid.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAAEcAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-01-03T17:23:12.942Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
               "Title": "Player.cs",
               "DocumentMoniker": "C:\\Users\\robix\\Or1-Or2_Ex02\\Ex02 Or 315900845 Or 314919994\\Ex02\\Player.cs",
               "RelativeDocumentMoniker": "Ex02\\Player.cs",
               "ToolTip": "C:\\Users\\robix\\Or1-Or2_Ex02\\Ex02 Or 315900845 Or 314919994\\Ex02\\Player.cs",
               "RelativeToolTip": "Ex02\\Player.cs",
-              "ViewState": "AgIAAAYAAAAAAAAAAAAewCQAAAAnAAAAAAAAAA==",
+              "ViewState": "AgIAAA4CAAAAAAAAAAAUwCYCAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-01-03T08:30:17.868Z",
               "EditorCaption": ""
