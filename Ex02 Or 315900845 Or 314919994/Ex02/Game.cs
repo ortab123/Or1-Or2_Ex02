@@ -36,7 +36,7 @@ namespace Ex02
                 if (currentPlayer.m_Name != "Computer")
                 {
                     Console.WriteLine($"{currentPlayer.m_Name}'s turn ({currentPlayer.m_Symbol}):" +
-                        $"{Environment.NewLine}{currentPlayer.m_Name}, enter your i_Move (FROMROWfromcol>TOROWtocol) or 'Q' to quit:");
+                        $"{Environment.NewLine}{currentPlayer.m_Name}, enter your move (FROMROWfromcol>TOROWtocol) or 'Q' to quit:");
                 }
 
 
@@ -294,7 +294,7 @@ namespace Ex02
                 }
                 else
                 {
-                    Console.WriteLine("Invalid input. Please enter i_Move in format of Xx>Yy, or 'Q' to quit.");
+                    Console.WriteLine("Invalid input. Please enter move in format of Xx>Yy, or 'Q' to quit.");
                 }
 
                 if (validatedMove == null)

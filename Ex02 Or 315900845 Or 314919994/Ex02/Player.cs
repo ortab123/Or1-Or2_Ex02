@@ -34,12 +34,12 @@ namespace Ex02
             }
         }
 
-        public static Player GetPlayerOrComputer(ePlayerType i_choice)
+        public static Player GetPlayerOrComputer(ePlayerType i_Choice)
         {
             Player player = null;
             char playerSymbol = 'O';
 
-            switch (i_choice)
+            switch (i_Choice)
             {
                 case ePlayerType.Regular:
                     string player2Name = Player.GetValidatePlayerName("Player 2");
@@ -135,13 +135,11 @@ namespace Ex02
 
         public eMoveMade MakePlayerMove(ref Grid io_Grid, Player i_Player)
         {
-
             int size = io_Grid.m_Size;
-            eMoveMade isMoveMade = new eMoveMade();
+            eMoveMade isMoveMade = eMoveMade.None;
 
-            string validationResult = ValidateMove(Console.ReadLine());
-
-            if (validationResult == "Q")
+            string currentPlayerValidatedMove = ValidateMove(Console.ReadLine());
+            if (currentPlayerValidatedMove == "Q")
             {
                 isMoveMade = eMoveMade.Quit;
             }
@@ -150,98 +148,113 @@ namespace Ex02
             List<string> optionalEatMoves = getOptionalEatMoves(ref io_Grid, size, playerSymbol);
             List<string> optionalMoves = getOptionalMoves(ref io_Grid, size, playerSymbol);
 
-            bool isEat = false;
-
-            while (optionalEatMoves.Count > 0 && isMoveMade != eMoveMade.Quit)
+            if (optionalEatMoves.Count > 0)
             {
-                if (optionalEatMoves.Contains(validationResult))
-                {
-                    isEat = true;
-                    io_Grid = UpdatingBoard(validationResult, ref io_Grid, size, playerSymbol);
-                    Board.PrintBoard(ref io_Grid);
-                    Console.WriteLine($"{i_Player.m_Name}'s move was ({i_Player.m_Symbol}): {validationResult}");
-                    isMoveMade = eMoveMade.Done;
-                    string eaterFinalPos = validationResult.Substring(3);
-  
-                    optionalEatMoves = getOptionalEatMoves(ref io_Grid, size, playerSymbol);
-                    bool hasExtraMove = false;
-
-                    foreach (string move in optionalEatMoves)
-                    {
-                        if (move.StartsWith(eaterFinalPos))
-                        {
-                            Console.WriteLine("You have another eating move. Enter your next move:");
-                            validationResult = ValidateMove(Console.ReadLine());
-                            while (move != validationResult)
-                            {
-                                Console.WriteLine("Wrong move, You have to you the same piece you used prevoiusly.");
-                                validationResult = ValidateMove(Console.ReadLine());
-                            }
-
-                            if (validationResult == "Q")
-                            {
-                                isMoveMade = eMoveMade.Quit;
-                                break;
-                            }
-
-                            if (validationResult.StartsWith(eaterFinalPos))
-                            {
-                                hasExtraMove = true;
-                                io_Grid = UpdatingBoard(validationResult, ref io_Grid, size, playerSymbol);
-                                Board.PrintBoard(ref io_Grid);
-                                Console.WriteLine($"{i_Player.m_Name}'s move was ({i_Player.m_Symbol}): {validationResult}");
-                                isMoveMade = eMoveMade.Done;
-                                break;
-                            }
-                        }
-                    }
-
-                    if (hasExtraMove)
-                    {
-                        break;
-                    }
-                }
-                else
-                {
-                    Console.WriteLine("Invalid move. You must make an eating move.");
-                    validationResult = ValidateMove(Console.ReadLine());
-
-                    if (validationResult == "Q")
-                    {
-                        isMoveMade = eMoveMade.Quit;
-                    }
-                }
+                isMoveMade = handleEatingMoves(ref io_Grid, i_Player, currentPlayerValidatedMove,
+                    optionalEatMoves, size);
             }
 
-            while (!isEat && optionalMoves.Count > 0 && isMoveMade != eMoveMade.Quit)
+            if (isMoveMade == eMoveMade.None && optionalMoves.Count > 0)
             {
-                if (optionalMoves.Contains(validationResult))
-                {
-                    io_Grid = UpdatingBoard(validationResult, ref io_Grid, size, playerSymbol);
-                    Board.PrintBoard(ref io_Grid);
-                    Console.WriteLine($"{i_Player.m_Name}'s move was ({i_Player.m_Symbol}): {validationResult}");
-                    isMoveMade = eMoveMade.Done;
-                    break;
-                }
-                else
-                {
-                    Console.WriteLine("Invalid move. Please enter a valid move.");
-                    validationResult = ValidateMove(Console.ReadLine());
-
-                    if (validationResult == "Q")
-                    {
-                        isMoveMade = eMoveMade.Quit;
-                        break;
-                    }
-                }
+                isMoveMade = handleRegularMoves(ref io_Grid, i_Player, currentPlayerValidatedMove,
+                    optionalMoves, size);
             }
 
-            if (optionalMoves.Count == 0 && optionalEatMoves.Count == 0)
+            if (optionalEatMoves.Count == 0 && optionalMoves.Count == 0)
             {
                 isMoveMade = eMoveMade.None;
             }
 
             return isMoveMade;
+        }
+
+        private eMoveMade handleEatingMoves(ref Grid io_Grid, Player i_Player,
+            string i_CurrentPlayerValidatedMove, List<string> i_OptionalEatMoves, int i_Size)
+        {
+            eMoveMade moveState = eMoveMade.None;
+            string currentPlayerValidatedMove = i_CurrentPlayerValidatedMove;
+
+            while (i_OptionalEatMoves.Count > 0)
+            {
+                if (!i_OptionalEatMoves.Contains(currentPlayerValidatedMove))
+                {
+                    Console.WriteLine("Invalid move. You must make an eating move.");
+                    currentPlayerValidatedMove = ValidateMove(Console.ReadLine());
+                    if (currentPlayerValidatedMove == "Q")
+                    {
+                        moveState = eMoveMade.Quit;
+                    }
+
+                    continue;
+                }
+
+                io_Grid = UpdatingBoard(currentPlayerValidatedMove, ref io_Grid, i_Size, i_Player.m_Symbol);
+                Board.PrintBoard(ref io_Grid);
+                Console.WriteLine($"{i_Player.m_Name}'s move was ({i_Player.m_Symbol}): {currentPlayerValidatedMove}");
+                string eaterFinalPos = currentPlayerValidatedMove.Substring(3);
+
+                i_OptionalEatMoves = getOptionalEatMoves(ref io_Grid, i_Size, i_Player.m_Symbol);
+                List<string> filteredMoves = new List<string>();
+
+                foreach (string move in i_OptionalEatMoves)
+                {
+                    if (move.StartsWith(eaterFinalPos))
+                    {
+                        filteredMoves.Add(move);
+                    }
+                }
+
+                i_OptionalEatMoves = filteredMoves;
+
+                if (i_OptionalEatMoves.Count == 0)
+                {
+                    moveState = eMoveMade.Done;
+                    break;
+                }
+
+                Console.WriteLine("You have another eating move. Enter your next move:");
+                currentPlayerValidatedMove = ValidateMove(Console.ReadLine());
+                if (currentPlayerValidatedMove == "Q")
+                {
+                    moveState = eMoveMade.Quit;
+                    break;
+                }
+
+                continue;
+            }
+
+            return moveState;
+        }
+
+        private eMoveMade handleRegularMoves(ref Grid io_Grid, Player i_Player,
+            string i_CurrentPlayerValidatedMove, List<string> i_OptionalMoves, int i_Size)
+        {
+            eMoveMade moveState = eMoveMade.None;
+            string currentPlayerValidatedMove = i_CurrentPlayerValidatedMove;
+
+            while (true)
+            {
+                if (i_OptionalMoves.Contains(currentPlayerValidatedMove))
+                {
+                    io_Grid = UpdatingBoard(currentPlayerValidatedMove, ref io_Grid, i_Size,
+                        i_Player.m_Symbol);
+                    Board.PrintBoard(ref io_Grid);
+                    Console.WriteLine($"{i_Player.m_Name}'s move was ({i_Player.m_Symbol}):" +
+                        $" {currentPlayerValidatedMove}");
+                    moveState = eMoveMade.Done;
+                    break;
+                }
+
+                Console.WriteLine("Invalid move. Please enter a valid move.");
+                currentPlayerValidatedMove = ValidateMove(Console.ReadLine());
+                if (currentPlayerValidatedMove == "Q")
+                {
+                    moveState = eMoveMade.Quit;
+                    break;
+                }
+            }
+
+            return moveState;
         }
 
         private static List<string> getOptionalMoves(ref Grid io_Grid, int i_Size, char i_Symbol)
